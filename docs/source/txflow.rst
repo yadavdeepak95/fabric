@@ -122,10 +122,8 @@ transaction was validated or invalidated.
           whether your transaction has actually been ordered, validated, and
           committed to the ledger.
 
-You can also use the swimlane sequence diagram below to examine the
-transaction flow in more detail.
-
-.. image:: images/flow-4.png
+See the :ref:`sequence diagram <swimlane>` to better understand the
+transaction flow.
 
 .. Licensed under Creative Commons Attribution 4.0 International License
 https://creativecommons.org/licenses/by/4.0/

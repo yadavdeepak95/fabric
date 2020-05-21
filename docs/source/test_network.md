@@ -54,10 +54,9 @@ Usage:
     -s <dbtype> - the database backend to use: goleveldb (default) or couchdb
     -r <max retry> - CLI times out after certain number of attempts (defaults to 5)
     -d <delay> - delay duration in seconds (defaults to 3)
-    -l <language> - the programming language of the chaincode to deploy: go (default), java, javascript, typescript
+    -l <language> - the programming language of the chaincode to deploy: go (default), javascript, or java
     -v <version>  - chaincode version. Must be a round number, 1, 2, 3, etc
     -i <imagetag> - the tag to be used to launch the network (defaults to "latest")
-    -cai <ca_imagetag> - the image tag to be used for CA (defaults to "1.4.6")
     -verbose - verbose mode
   network.sh -h (print this message)
 
@@ -281,7 +280,7 @@ followed the instructions to [install the Samples, Binaries and Docker Images](i
 You can find the `peer` binaries in the `bin` folder of the `fabric-samples`
 repository. Use the following command to add those binaries to your CLI Path:
 ```
-export PATH=${PWD}/../bin:$PATH
+export PATH=${PWD}/../bin:${PWD}:$PATH
 ```
 You also need to set the `FABRIC_CFG_PATH` to point to the `core.yaml` file in
 the `fabric-samples` repository:
@@ -494,7 +493,7 @@ establishes the identity's role and membership in the organization that operated
 the CA. You can use the following command to examine the MSP folder of the Org1
 admin user:
 ```
-tree organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/
+tree organizations/peerOrganizations/org1.example.com/users/Admin/@org1.example.com/
 ```
 The command will reveal the MSP folder structure and configuration file:
 ```
@@ -503,12 +502,12 @@ organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/
     ├── IssuerPublicKey
     ├── IssuerRevocationPublicKey
     ├── cacerts
-    │   └── localhost-7054-ca-org1.pem
+    │   └── localhost-7054-ca-org1.pem
     ├── config.yaml
     ├── keystore
-    │   └── 58e81e6f1ee8930df46841bf88c22a08ae53c1332319854608539ee78ed2fd65_sk
+    │   └── 58e81e6f1ee8930df46841bf88c22a08ae53c1332319854608539ee78ed2fd65_sk
     ├── signcerts
-    │   └── cert.pem
+    │   └── cert.pem
     └── user
 ```
 You can find the certificate of the admin user in the `signcerts` folder and the

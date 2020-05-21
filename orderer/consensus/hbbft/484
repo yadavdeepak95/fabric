@@ -1,0 +1,751 @@
+
+Running Suite: Hbbft Suite
+==========================
+Random Seed: [1m1589812764[0m
+Will run [1m14[0m of [1m14[0m specs
+
+[45 45 45 45 45 66 69 71 73 78 32 67 69 82 84 73 70 73 67 65 84 69 45 45 45 45 45 10 89 50 86 121 100 67 66 105 101 88 82 108 99 119 61 61 10 45 45 45 45 45 69 78 68 32 67 69 82 84 73 70 73 67 65 84 69 45 45 45 45 45 10][32m•[0m[32m•[0m[32m•[0m[32m•[0m[32m•[0m[32m•[0m[33m2020-05-18 20:09:30.700 IST [test] ReceiverByChain -> WARN 001[0m Chain notraftchain is of type *multichannel.ChainSupport and not hbbftChain.Chain
+[35m2020-05-18 20:09:30.702 IST [test] ReceiverByChain -> PANI 002[0m Programming error - Chain badChainObject is nil although it exists in the mapping
+[32m•[0mWRAPPER FIRED UP***********************8****************************chain****************
+&{configurator:0xc0003639a0 rpc:0xc000393e60 nodeID:0 channelID: ActiveNodes:{v:[]} Node:0xc00058a080 submitC:0xc000191620 haltC:0xc000191680 doneC:0xc0001916e0 startC:0xc000191740 errorCLock:{w:{state:0 sema:0} writerSem:0 readerSem:0 readerCount:0 readerWait:0} errorC:0xc0001917a0 hbbftMetadataLock:{w:{state:0 sema:0} writerSem:0 readerSem:0 readerCount:0 readerWait:0} configInflight:false support:0xc000347800 lastBlock:0xc0003dac80 createPuller:0xac1b70 opts:{NodeID:0 Logger:0xc00054a9c8 BatchSize:10 BlockMetadata:0xc00041a280 Consenters:map[0:0xc0003e8310] MigrationInit:false Cert:[45 45 45 45 45 66 69 71 73 78 32 67 69 82 84 73 70 73 67 65 84 69 45 45 45 45 45 10 89 50 86 121 100 67 66 105 101 88 82 108 99 119 61 61 10 45 45 45 45 45 69 78 68 32 67 69 82 84 73 70 73 67 65 84 69 45 45 45 45 45 10]} logger:0xc00054a9e0 haltCallback:0xac1cf0 CryptoProvider:0xc000363db0 bc:<nil>}[34m2020-05-18 20:09:30.726 IST [test] Start -> INFO 003[0m Starting Hbbft node channel= node=0
+
+
+CONSENTERS LIST :
+ map[0:server_tls_cert:"-----BEGIN CERTIFICATE-----\nY2VydCBieXRlcw==\n-----END CERTIFICATE-----\n\n" ]
+
+[32m•[0m*****************************CALLING TRACK CHAIN[33m2020-05-18 20:09:30.728 IST [test] detectSelfID -> WARN 004[0m Could not find -----BEGIN CERTIFICATE-----
+Y2VydCBieXRlcw==
+-----END CERTIFICATE-----
+ among [-----BEGIN CERTIFICATE-----
+Zm9v
+-----END CERTIFICATE-----
+]
+[32m•[0m[32m•[0mWRAPPER FIRED UP***********************8{"level":"info","msg":"Starting Hbbft node","channel":"test-channel","node":1}
+
+
+CONSENTERS LIST :
+ map[1:host:"localhost" port:7050 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBijCCATCgAwIBAgIRAPjY8biY0D0Qb0gnFoqhBncwCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTg3NDk2NTUwNDY4NDUyODgwMjMzNTU4NjY4MDk4NTUwNjY2MDM0\nMB4XDTIwMDUxNzE0MzkzMFoXDTIwMDUxOTE0MzkzMFowMjEwMC4GA1UEBRMnMzMw\nNzc0OTgxNzYyMDkyNTA4MzU1OTYzMzgyMzEyODAxOTk0MzU5MFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEQSdsx5bdxkZYV4eYSr3C9A5CZCEGQl467R/BzJU0kX7S\nyq4EfRKbV/67sKrrbZIyj1T6Vtj60/BWmoR647wcXqMnMCUwDgYDVR0PAQH/BAQD\nAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0gAMEUCIQCTF5hm\nNZ+cWR8rYyT/tixvue05nL1te0n8QjS/pRtkVAIgdfa5Ce2N5dS+S5+xn+Hdo+87\ndD2odz815+oc8X0C3BM=\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqTCCAVCgAwIBAgIRAPGrjCxhCpJ/JBbxVZd2CLgwCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTg3NDk2NTUwNDY4NDUyODgwMjMzNTU4NjY4MDk4NTUwNjY2MDM0\nMB4XDTIwMDUxNzE0MzkzMFoXDTMwMDUxNjE0MzkzMFowMjEwMC4GA1UEBRMnMzIx\nMjM0NjcyODAwMzkwNjY5Nzc3NDk2NTY4NjAzMTA3MjY0Njk2MFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEZQ5wtYFICOBS01sD5w2lKfmEBoamv1G9GYe6dvLm+jhh\nMrP6SVFgJ3r5YLBsNwfa2cBs2vl902ZydDlmiqJqEqNHMEUwDgYDVR0PAQH/BAQD\nAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAUBgNVHREEDTALggls\nb2NhbGhvc3QwCgYIKoZIzj0EAwIDRwAwRAIgZhFFdGI4FhO3/16SA5nVhhEpFFrp\nbBcjZqP8KeKCuGkCIEsWhYVN4Zpq+uenqJmnWg3n5pkLhQsNIHIujXaQP1E0\n-----END CERTIFICATE-----\n" ]
+
+DONEDONEDONE{"level":"info","msg":"Stop serving requests","channel":"test-channel","node":1}
+{"level":"info","msg":"Stop serving requests","channel":"test-channel","node":1}
+[32m•[0mWRAPPER FIRED UP***********************8{"level":"info","msg":"Starting Hbbft node","channel":"test-channel","node":1}
+
+
+CONSENTERS LIST :
+ map[1:host:"localhost" port:7050 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiDCCAS+gAwIBAgIQVRWprZjjem18L9Q7X4NZAzAKBggqhkjOPQQDAjAyMTAw\nLgYDVQQFEycyNTMyMzAxOTQ2NjkyNTIxNTkzOTk5MTA3MTExOTYzNzExMTIzOTAw\nHhcNMjAwNTE3MTQzOTMwWhcNMjAwNTE5MTQzOTMwWjAyMTAwLgYDVQQFEycxMTMw\nOTY4NTkzNTY3NTg5Mzg0NzkzMDYzODEwNTEyNzQ5NDI3MjMwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAASQW9RcCBZgJMfFiFOPpIKdJWusVWN5OeclYuoy7iePI6ip\nNwnc023+c/wK/xdG+XFuniYi6NDZIH72cVNwVCF0oycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDRwAwRAIgWDu9b6Ci\nHz5LVUhoflh9uM6i9krJyca4cZL7zeFdxk4CICii+PtfVa8xX3bWzgeWETpCgMrY\njZ+VD6gPNG6mRAfi\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqDCCAU6gAwIBAgIQJgm3mU/qFJZe7xQRYu1BejAKBggqhkjOPQQDAjAyMTAw\nLgYDVQQFEycyNTMyMzAxOTQ2NjkyNTIxNTkzOTk5MTA3MTExOTYzNzExMTIzOTAw\nHhcNMjAwNTE3MTQzOTMwWhcNMzAwNTE2MTQzOTMwWjAxMS8wLQYDVQQFEyY1MDU2\nMTExODMzOTE1MjI1MTE5NTk5MDczNzQ0NjIwNzU3MDI5ODBZMBMGByqGSM49AgEG\nCCqGSM49AwEHA0IABC54Xry3oWJYtvPxrsWYyF33oB1ZiYfm00HA7pMEdATLhGa5\nZGGWV74N1OxYnaW1E2YztAT7jyEDO7PqsS+h37mjRzBFMA4GA1UdDwEB/wQEAwIF\noDAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwFAYDVR0RBA0wC4IJbG9j\nYWxob3N0MAoGCCqGSM49BAMCA0gAMEUCIBN3cJCYqXx3wsPyUSl/oU245Y5x1zy0\ndRfrscetqnC6AiEA0svcJ4wDwruswibkSjFEkTYslQ9tk/THOZuD/673+i0=\n-----END CERTIFICATE-----\n" ]
+
+{"level":"info","msg":"Stop serving requests","channel":"test-channel","node":1}
+{"level":"info","msg":"Stop serving requests","channel":"test-channel","node":1}
+[32m•[0mWRAPPER FIRED UP***********************8WRAPPER FIRED UP***********************8WRAPPER FIRED UP***********************8WRAPPER FIRED UP***********************8{"level":"info","msg":"Starting Hbbft node","channel":"multi-node-channel","node":0}
+
+
+CONSENTERS LIST :
+ map[0:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiDCCAS2gAwIBAgIQKicDqGW060ImACKayIjI1jAKBggqhkjOPQQDAjAxMS8w\nLQYDVQQFEyY3NzMyNjE3NjAyNDIwMTA3MjU2OTExOTQ4NTU4MjE5MzE2NzkyNzAe\nFw0yMDA1MTcxNDM5MzBaFw0yMDA1MTkxNDM5MzBaMDExLzAtBgNVBAUTJjU2MDMw\nMTQ5NTg5NDg2MTQxOTA2NzI1ODY4NDkxNDgzMTcxMDMwMFkwEwYHKoZIzj0CAQYI\nKoZIzj0DAQcDQgAEIDoucc0IDg/WtkAojUieAtL6E09Qzxz5Q0VkaI+RMm2YVYsV\nRQOcPX0dX+3Pq21bE0PQOXftEJ3hGVGkjfc2CaMnMCUwDgYDVR0PAQH/BAQDAgWg\nMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0kAMEYCIQDeLPJtdtXj\nE5a2tFkQ4QSxl32q8Jz0MSZGy1ffA07IzQIhAPgC3tQvzWJ6Z1Noh7OOv/xG1H4I\nY/PaymSS4SSuTijk\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqDCCAU+gAwIBAgIRAPGtl/9+1grTov+xpN69Z5EwCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMzAwNTE2MTQzOTMwWjAyMTAwLgYDVQQFEyczMjEy\nNDUyOTcyMjY5NzY3MTU1Nzk3NTM1MTkwMDc5MjE5NTY3NTMwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAATLqZqMDIAdZMDz4AnHhQhFJt4n4Dx+yz43WtDpyR1TAmHa\npr4DLsb01QDSlpnetmvlj9/rqPo22tFK597m77Eoo0cwRTAOBgNVHQ8BAf8EBAMC\nBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMBQGA1UdEQQNMAuCCWxv\nY2FsaG9zdDAKBggqhkjOPQQDAgNHADBEAiBTPBFKeHMu434+CJdpsSP5OUEFiXoq\nx1wIpMwiuE6jkgIgct0yJ2351bRAdwkVDfJLIgjJyFswTDYxSG1GbYC1+ww=\n-----END CERTIFICATE-----\n"  1:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCAS+gAwIBAgIRAOPOFcvwad/BdnOBMTEdLgEwCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMjAwNTE5MTQzOTMwWjAyMTAwLgYDVQQFEyczMDI4\nMDQ4MTAyODQzNTcxNDA5NDYwNDU4NjU3OTAzNDg3OTk0ODkwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAATPLFO5PDWW3/hnmrRwiOzWTaQKyuVFTeEE+EQ6sPU/gp08\nmCURy9v266Wn2D3wheAf7lGX0FNM1lmE6EDjAC2JoycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDSAAwRQIhAMbvY0X+\n9PqgviHbHC4Bahb0tvGXplvfoLCInDWNWdvUAiBvJdyb+D9LUO2LQBX7DKv4Jttm\nTkQL9Vh8C2xyJqtj6w==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBpzCCAU2gAwIBAgIQNxflpomRuO6/MWaDQy2GmjAKBggqhkjOPQQDAjAxMS8w\nLQYDVQQFEyY3NzMyNjE3NjAyNDIwMTA3MjU2OTExOTQ4NTU4MjE5MzE2NzkyNzAe\nFw0yMDA1MTcxNDM5MzBaFw0zMDA1MTYxNDM5MzBaMDExLzAtBgNVBAUTJjczMjMx\nNjIwNDYyMTY2NTAxNTU0NDc1OTUyODMyMTA4MTM2MDkwMFkwEwYHKoZIzj0CAQYI\nKoZIzj0DAQcDQgAEF359xK0kOmM5Y5S5riK1KS9fU0hwq+9kQ1PHiqr6bYwRZy4P\n5TDywEBuIQCGBOfC6kbhsoxW+8KHg4AWlmO5nqNHMEUwDgYDVR0PAQH/BAQDAgWg\nMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAUBgNVHREEDTALgglsb2Nh\nbGhvc3QwCgYIKoZIzj0EAwIDSAAwRQIhAO/VrhGRkhTdOw1JSwjfV7cpZsRkFhLe\n+0E6Ttx8IEjJAiAClRXH/3Mwy8/oaEllAjEQWWq19cEg3N8et6bVRAmDXQ==\n-----END CERTIFICATE-----\n"  2:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCAS+gAwIBAgIRAP1ilYUCK0LHCiKVbZHsiwkwCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMjAwNTE5MTQzOTMwWjAyMTAwLgYDVQQFEyczMzY4\nMDY1NjA2NDI3Njc5NTY2MjYwMTU2MTI2MTcxNDQxNzUzNjkwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAARopwai3OTVbLQ+Fy2AQPBZr0yZQN5OgIRntnReYxJdfvbx\n75eeF4dxaBaMCvfT7+cH3CoiTLbB32FN5YYA5Ah3oycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDSAAwRQIhAPAZGCn5\nM/LlAwPnrGCD7JQQvw9iJ8anrZED1GWppus6AiBVky5MGNP4ywfJTj4fPtyBjkde\nNrb8WLWN/LwLYubXFA==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqjCCAU+gAwIBAgIRAI+CoZiSJ5p2zj+gtnL/PB8wCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMzAwNTE2MTQzOTMwWjAyMTAwLgYDVQQFEycxOTA3\nNTc4Nzk1NDQ3MTIwNzY0ODA5NjgyMzEwNjQ1NjY3MDkyNzkwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAATUyhVUmSaNoU84CZH3Uz9RufI5S4294EwdpgY7lke89uaQ\noVvC2racQlaJgX93tg2OoUYDowmvd0ABWsZb92Ero0cwRTAOBgNVHQ8BAf8EBAMC\nBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMBQGA1UdEQQNMAuCCWxv\nY2FsaG9zdDAKBggqhkjOPQQDAgNJADBGAiEA+B/9lS62OiD4pFsyZPB+AmQs0QQH\n2ngqSdH7HjM01GUCIQDDUYxSaBY0a0RQiRH5zyWpN4DNKvNpcyTtHwAeLoHqkQ==\n-----END CERTIFICATE-----\n"  3:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCAS+gAwIBAgIRAPmD8vjruFBEoQNtVqaPT70wCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMjAwNTE5MTQzOTMwWjAyMTAwLgYDVQQFEyczMzE2\nNjI4ODk5MDM1NzIzMDA3MjgzMDg0MTgyNDg5NDYxNzU5MzMwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAASMPjoKUJvjEbPGEBUQBjctCuQyJBBg2sYqBR+s7ompQbk8\nObq2GYCnpeHSjagKHxFGXhxn0H10z574K10cgLBXoycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDSAAwRQIgBVE5Hl6e\nX4NVr12HvuiYJKGjEr0xoA/lcKTkmnSS1IkCIQDY72WVl2n8Ra+Y+S2yQvYiPQPS\nvUfsukTYUzYlM6p4ow==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBpzCCAU6gAwIBAgIQb9ZqC4shOJ7i7Upfsio+JTAKBggqhkjOPQQDAjAxMS8w\nLQYDVQQFEyY3NzMyNjE3NjAyNDIwMTA3MjU2OTExOTQ4NTU4MjE5MzE2NzkyNzAe\nFw0yMDA1MTcxNDM5MzBaFw0zMDA1MTYxNDM5MzBaMDIxMDAuBgNVBAUTJzE0ODY1\nNzYwOTkwOTgzODQ2ODAzOTQ3NTQyMTEwMTg2NTcxMzE4OTBZMBMGByqGSM49AgEG\nCCqGSM49AwEHA0IABJzmSfwZK4hzo+N5CD0pF7bR45scdpIkz1+aNB5pg9C3e9eA\nsqNmHnHNJV/dCLp1VlhgqGHQFeEVQHouolAPtaqjRzBFMA4GA1UdDwEB/wQEAwIF\noDAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwFAYDVR0RBA0wC4IJbG9j\nYWxob3N0MAoGCCqGSM49BAMCA0cAMEQCIDIoewCxbMr6/o98KtL117LKVIVXfC1t\nIhKoL4Ue3ib6AiBDilyYCGv2ZTAAFqfmxsgcD1t/QoZHYIeoidJ0tgnmKg==\n-----END CERTIFICATE-----\n" ]
+
+{"level":"info","msg":"Starting Hbbft node","channel":"multi-node-channel","node":1}
+
+
+CONSENTERS LIST :
+ map[0:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiDCCAS2gAwIBAgIQKicDqGW060ImACKayIjI1jAKBggqhkjOPQQDAjAxMS8w\nLQYDVQQFEyY3NzMyNjE3NjAyNDIwMTA3MjU2OTExOTQ4NTU4MjE5MzE2NzkyNzAe\nFw0yMDA1MTcxNDM5MzBaFw0yMDA1MTkxNDM5MzBaMDExLzAtBgNVBAUTJjU2MDMw\nMTQ5NTg5NDg2MTQxOTA2NzI1ODY4NDkxNDgzMTcxMDMwMFkwEwYHKoZIzj0CAQYI\nKoZIzj0DAQcDQgAEIDoucc0IDg/WtkAojUieAtL6E09Qzxz5Q0VkaI+RMm2YVYsV\nRQOcPX0dX+3Pq21bE0PQOXftEJ3hGVGkjfc2CaMnMCUwDgYDVR0PAQH/BAQDAgWg\nMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0kAMEYCIQDeLPJtdtXj\nE5a2tFkQ4QSxl32q8Jz0MSZGy1ffA07IzQIhAPgC3tQvzWJ6Z1Noh7OOv/xG1H4I\nY/PaymSS4SSuTijk\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqDCCAU+gAwIBAgIRAPGtl/9+1grTov+xpN69Z5EwCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMzAwNTE2MTQzOTMwWjAyMTAwLgYDVQQFEyczMjEy\nNDUyOTcyMjY5NzY3MTU1Nzk3NTM1MTkwMDc5MjE5NTY3NTMwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAATLqZqMDIAdZMDz4AnHhQhFJt4n4Dx+yz43WtDpyR1TAmHa\npr4DLsb01QDSlpnetmvlj9/rqPo22tFK597m77Eoo0cwRTAOBgNVHQ8BAf8EBAMC\nBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMBQGA1UdEQQNMAuCCWxv\nY2FsaG9zdDAKBggqhkjOPQQDAgNHADBEAiBTPBFKeHMu434+CJdpsSP5OUEFiXoq\nx1wIpMwiuE6jkgIgct0yJ2351bRAdwkVDfJLIgjJyFswTDYxSG1GbYC1+ww=\n-----END CERTIFICATE-----\n"  1:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCAS+gAwIBAgIRAOPOFcvwad/BdnOBMTEdLgEwCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMjAwNTE5MTQzOTMwWjAyMTAwLgYDVQQFEyczMDI4\nMDQ4MTAyODQzNTcxNDA5NDYwNDU4NjU3OTAzNDg3OTk0ODkwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAATPLFO5PDWW3/hnmrRwiOzWTaQKyuVFTeEE+EQ6sPU/gp08\nmCURy9v266Wn2D3wheAf7lGX0FNM1lmE6EDjAC2JoycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDSAAwRQIhAMbvY0X+\n9PqgviHbHC4Bahb0tvGXplvfoLCInDWNWdvUAiBvJdyb+D9LUO2LQBX7DKv4Jttm\nTkQL9Vh8C2xyJqtj6w==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBpzCCAU2gAwIBAgIQNxflpomRuO6/MWaDQy2GmjAKBggqhkjOPQQDAjAxMS8w\nLQYDVQQFEyY3NzMyNjE3NjAyNDIwMTA3MjU2OTExOTQ4NTU4MjE5MzE2NzkyNzAe\nFw0yMDA1MTcxNDM5MzBaFw0zMDA1MTYxNDM5MzBaMDExLzAtBgNVBAUTJjczMjMx\nNjIwNDYyMTY2NTAxNTU0NDc1OTUyODMyMTA4MTM2MDkwMFkwEwYHKoZIzj0CAQYI\nKoZIzj0DAQcDQgAEF359xK0kOmM5Y5S5riK1KS9fU0hwq+9kQ1PHiqr6bYwRZy4P\n5TDywEBuIQCGBOfC6kbhsoxW+8KHg4AWlmO5nqNHMEUwDgYDVR0PAQH/BAQDAgWg\nMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAUBgNVHREEDTALgglsb2Nh\nbGhvc3QwCgYIKoZIzj0EAwIDSAAwRQIhAO/VrhGRkhTdOw1JSwjfV7cpZsRkFhLe\n+0E6Ttx8IEjJAiAClRXH/3Mwy8/oaEllAjEQWWq19cEg3N8et6bVRAmDXQ==\n-----END CERTIFICATE-----\n"  2:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCAS+gAwIBAgIRAP1ilYUCK0LHCiKVbZHsiwkwCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMjAwNTE5MTQzOTMwWjAyMTAwLgYDVQQFEyczMzY4\nMDY1NjA2NDI3Njc5NTY2MjYwMTU2MTI2MTcxNDQxNzUzNjkwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAARopwai3OTVbLQ+Fy2AQPBZr0yZQN5OgIRntnReYxJdfvbx\n75eeF4dxaBaMCvfT7+cH3CoiTLbB32FN5YYA5Ah3oycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDSAAwRQIhAPAZGCn5\nM/LlAwPnrGCD7JQQvw9iJ8anrZED1GWppus6AiBVky5MGNP4ywfJTj4fPtyBjkde\nNrb8WLWN/LwLYubXFA==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqjCCAU+gAwIBAgIRAI+CoZiSJ5p2zj+gtnL/PB8wCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMzAwNTE2MTQzOTMwWjAyMTAwLgYDVQQFEycxOTA3\nNTc4Nzk1NDQ3MTIwNzY0ODA5NjgyMzEwNjQ1NjY3MDkyNzkwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAATUyhVUmSaNoU84CZH3Uz9RufI5S4294EwdpgY7lke89uaQ\noVvC2racQlaJgX93tg2OoUYDowmvd0ABWsZb92Ero0cwRTAOBgNVHQ8BAf8EBAMC\nBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMBQGA1UdEQQNMAuCCWxv\nY2FsaG9zdDAKBggqhkjOPQQDAgNJADBGAiEA+B/9lS62OiD4pFsyZPB+AmQs0QQH\n2ngqSdH7HjM01GUCIQDDUYxSaBY0a0RQiRH5zyWpN4DNKvNpcyTtHwAeLoHqkQ==\n-----END CERTIFICATE-----\n"  3:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCAS+gAwIBAgIRAPmD8vjruFBEoQNtVqaPT70wCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMjAwNTE5MTQzOTMwWjAyMTAwLgYDVQQFEyczMzE2\nNjI4ODk5MDM1NzIzMDA3MjgzMDg0MTgyNDg5NDYxNzU5MzMwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAASMPjoKUJvjEbPGEBUQBjctCuQyJBBg2sYqBR+s7ompQbk8\nObq2GYCnpeHSjagKHxFGXhxn0H10z574K10cgLBXoycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDSAAwRQIgBVE5Hl6e\nX4NVr12HvuiYJKGjEr0xoA/lcKTkmnSS1IkCIQDY72WVl2n8Ra+Y+S2yQvYiPQPS\nvUfsukTYUzYlM6p4ow==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBpzCCAU6gAwIBAgIQb9ZqC4shOJ7i7Upfsio+JTAKBggqhkjOPQQDAjAxMS8w\nLQYDVQQFEyY3NzMyNjE3NjAyNDIwMTA3MjU2OTExOTQ4NTU4MjE5MzE2NzkyNzAe\nFw0yMDA1MTcxNDM5MzBaFw0zMDA1MTYxNDM5MzBaMDIxMDAuBgNVBAUTJzE0ODY1\nNzYwOTkwOTgzODQ2ODAzOTQ3NTQyMTEwMTg2NTcxMzE4OTBZMBMGByqGSM49AgEG\nCCqGSM49AwEHA0IABJzmSfwZK4hzo+N5CD0pF7bR45scdpIkz1+aNB5pg9C3e9eA\nsqNmHnHNJV/dCLp1VlhgqGHQFeEVQHouolAPtaqjRzBFMA4GA1UdDwEB/wQEAwIF\noDAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwFAYDVR0RBA0wC4IJbG9j\nYWxob3N0MAoGCCqGSM49BAMCA0cAMEQCIDIoewCxbMr6/o98KtL117LKVIVXfC1t\nIhKoL4Ue3ib6AiBDilyYCGv2ZTAAFqfmxsgcD1t/QoZHYIeoidJ0tgnmKg==\n-----END CERTIFICATE-----\n" ]
+
+{"level":"info","msg":"Starting Hbbft node","channel":"multi-node-channel","node":2}
+
+
+CONSENTERS LIST :
+ map[0:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiDCCAS2gAwIBAgIQKicDqGW060ImACKayIjI1jAKBggqhkjOPQQDAjAxMS8w\nLQYDVQQFEyY3NzMyNjE3NjAyNDIwMTA3MjU2OTExOTQ4NTU4MjE5MzE2NzkyNzAe\nFw0yMDA1MTcxNDM5MzBaFw0yMDA1MTkxNDM5MzBaMDExLzAtBgNVBAUTJjU2MDMw\nMTQ5NTg5NDg2MTQxOTA2NzI1ODY4NDkxNDgzMTcxMDMwMFkwEwYHKoZIzj0CAQYI\nKoZIzj0DAQcDQgAEIDoucc0IDg/WtkAojUieAtL6E09Qzxz5Q0VkaI+RMm2YVYsV\nRQOcPX0dX+3Pq21bE0PQOXftEJ3hGVGkjfc2CaMnMCUwDgYDVR0PAQH/BAQDAgWg\nMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0kAMEYCIQDeLPJtdtXj\nE5a2tFkQ4QSxl32q8Jz0MSZGy1ffA07IzQIhAPgC3tQvzWJ6Z1Noh7OOv/xG1H4I\nY/PaymSS4SSuTijk\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqDCCAU+gAwIBAgIRAPGtl/9+1grTov+xpN69Z5EwCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMzAwNTE2MTQzOTMwWjAyMTAwLgYDVQQFEyczMjEy\nNDUyOTcyMjY5NzY3MTU1Nzk3NTM1MTkwMDc5MjE5NTY3NTMwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAATLqZqMDIAdZMDz4AnHhQhFJt4n4Dx+yz43WtDpyR1TAmHa\npr4DLsb01QDSlpnetmvlj9/rqPo22tFK597m77Eoo0cwRTAOBgNVHQ8BAf8EBAMC\nBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMBQGA1UdEQQNMAuCCWxv\nY2FsaG9zdDAKBggqhkjOPQQDAgNHADBEAiBTPBFKeHMu434+CJdpsSP5OUEFiXoq\nx1wIpMwiuE6jkgIgct0yJ2351bRAdwkVDfJLIgjJyFswTDYxSG1GbYC1+ww=\n-----END CERTIFICATE-----\n"  1:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCAS+gAwIBAgIRAOPOFcvwad/BdnOBMTEdLgEwCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMjAwNTE5MTQzOTMwWjAyMTAwLgYDVQQFEyczMDI4\nMDQ4MTAyODQzNTcxNDA5NDYwNDU4NjU3OTAzNDg3OTk0ODkwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAATPLFO5PDWW3/hnmrRwiOzWTaQKyuVFTeEE+EQ6sPU/gp08\nmCURy9v266Wn2D3wheAf7lGX0FNM1lmE6EDjAC2JoycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDSAAwRQIhAMbvY0X+\n9PqgviHbHC4Bahb0tvGXplvfoLCInDWNWdvUAiBvJdyb+D9LUO2LQBX7DKv4Jttm\nTkQL9Vh8C2xyJqtj6w==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBpzCCAU2gAwIBAgIQNxflpomRuO6/MWaDQy2GmjAKBggqhkjOPQQDAjAxMS8w\nLQYDVQQFEyY3NzMyNjE3NjAyNDIwMTA3MjU2OTExOTQ4NTU4MjE5MzE2NzkyNzAe\nFw0yMDA1MTcxNDM5MzBaFw0zMDA1MTYxNDM5MzBaMDExLzAtBgNVBAUTJjczMjMx\nNjIwNDYyMTY2NTAxNTU0NDc1OTUyODMyMTA4MTM2MDkwMFkwEwYHKoZIzj0CAQYI\nKoZIzj0DAQcDQgAEF359xK0kOmM5Y5S5riK1KS9fU0hwq+9kQ1PHiqr6bYwRZy4P\n5TDywEBuIQCGBOfC6kbhsoxW+8KHg4AWlmO5nqNHMEUwDgYDVR0PAQH/BAQDAgWg\nMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAUBgNVHREEDTALgglsb2Nh\nbGhvc3QwCgYIKoZIzj0EAwIDSAAwRQIhAO/VrhGRkhTdOw1JSwjfV7cpZsRkFhLe\n+0E6Ttx8IEjJAiAClRXH/3Mwy8/oaEllAjEQWWq19cEg3N8et6bVRAmDXQ==\n-----END CERTIFICATE-----\n"  2:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCAS+gAwIBAgIRAP1ilYUCK0LHCiKVbZHsiwkwCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMjAwNTE5MTQzOTMwWjAyMTAwLgYDVQQFEyczMzY4\nMDY1NjA2NDI3Njc5NTY2MjYwMTU2MTI2MTcxNDQxNzUzNjkwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAARopwai3OTVbLQ+Fy2AQPBZr0yZQN5OgIRntnReYxJdfvbx\n75eeF4dxaBaMCvfT7+cH3CoiTLbB32FN5YYA5Ah3oycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDSAAwRQIhAPAZGCn5\nM/LlAwPnrGCD7JQQvw9iJ8anrZED1GWppus6AiBVky5MGNP4ywfJTj4fPtyBjkde\nNrb8WLWN/LwLYubXFA==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqjCCAU+gAwIBAgIRAI+CoZiSJ5p2zj+gtnL/PB8wCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMzAwNTE2MTQzOTMwWjAyMTAwLgYDVQQFEycxOTA3\nNTc4Nzk1NDQ3MTIwNzY0ODA5NjgyMzEwNjQ1NjY3MDkyNzkwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAATUyhVUmSaNoU84CZH3Uz9RufI5S4294EwdpgY7lke89uaQ\noVvC2racQlaJgX93tg2OoUYDowmvd0ABWsZb92Ero0cwRTAOBgNVHQ8BAf8EBAMC\nBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMBQGA1UdEQQNMAuCCWxv\nY2FsaG9zdDAKBggqhkjOPQQDAgNJADBGAiEA+B/9lS62OiD4pFsyZPB+AmQs0QQH\n2ngqSdH7HjM01GUCIQDDUYxSaBY0a0RQiRH5zyWpN4DNKvNpcyTtHwAeLoHqkQ==\n-----END CERTIFICATE-----\n"  3:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCAS+gAwIBAgIRAPmD8vjruFBEoQNtVqaPT70wCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMjAwNTE5MTQzOTMwWjAyMTAwLgYDVQQFEyczMzE2\nNjI4ODk5MDM1NzIzMDA3MjgzMDg0MTgyNDg5NDYxNzU5MzMwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAASMPjoKUJvjEbPGEBUQBjctCuQyJBBg2sYqBR+s7ompQbk8\nObq2GYCnpeHSjagKHxFGXhxn0H10z574K10cgLBXoycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDSAAwRQIgBVE5Hl6e\nX4NVr12HvuiYJKGjEr0xoA/lcKTkmnSS1IkCIQDY72WVl2n8Ra+Y+S2yQvYiPQPS\nvUfsukTYUzYlM6p4ow==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBpzCCAU6gAwIBAgIQb9ZqC4shOJ7i7Upfsio+JTAKBggqhkjOPQQDAjAxMS8w\nLQYDVQQFEyY3NzMyNjE3NjAyNDIwMTA3MjU2OTExOTQ4NTU4MjE5MzE2NzkyNzAe\nFw0yMDA1MTcxNDM5MzBaFw0zMDA1MTYxNDM5MzBaMDIxMDAuBgNVBAUTJzE0ODY1\nNzYwOTkwOTgzODQ2ODAzOTQ3NTQyMTEwMTg2NTcxMzE4OTBZMBMGByqGSM49AgEG\nCCqGSM49AwEHA0IABJzmSfwZK4hzo+N5CD0pF7bR45scdpIkz1+aNB5pg9C3e9eA\nsqNmHnHNJV/dCLp1VlhgqGHQFeEVQHouolAPtaqjRzBFMA4GA1UdDwEB/wQEAwIF\noDAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwFAYDVR0RBA0wC4IJbG9j\nYWxob3N0MAoGCCqGSM49BAMCA0cAMEQCIDIoewCxbMr6/o98KtL117LKVIVXfC1t\nIhKoL4Ue3ib6AiBDilyYCGv2ZTAAFqfmxsgcD1t/QoZHYIeoidJ0tgnmKg==\n-----END CERTIFICATE-----\n" ]
+
+{"level":"info","msg":"Starting Hbbft node","channel":"multi-node-channel","node":3}
+
+
+CONSENTERS LIST :
+ map[0:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiDCCAS2gAwIBAgIQKicDqGW060ImACKayIjI1jAKBggqhkjOPQQDAjAxMS8w\nLQYDVQQFEyY3NzMyNjE3NjAyNDIwMTA3MjU2OTExOTQ4NTU4MjE5MzE2NzkyNzAe\nFw0yMDA1MTcxNDM5MzBaFw0yMDA1MTkxNDM5MzBaMDExLzAtBgNVBAUTJjU2MDMw\nMTQ5NTg5NDg2MTQxOTA2NzI1ODY4NDkxNDgzMTcxMDMwMFkwEwYHKoZIzj0CAQYI\nKoZIzj0DAQcDQgAEIDoucc0IDg/WtkAojUieAtL6E09Qzxz5Q0VkaI+RMm2YVYsV\nRQOcPX0dX+3Pq21bE0PQOXftEJ3hGVGkjfc2CaMnMCUwDgYDVR0PAQH/BAQDAgWg\nMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0kAMEYCIQDeLPJtdtXj\nE5a2tFkQ4QSxl32q8Jz0MSZGy1ffA07IzQIhAPgC3tQvzWJ6Z1Noh7OOv/xG1H4I\nY/PaymSS4SSuTijk\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqDCCAU+gAwIBAgIRAPGtl/9+1grTov+xpN69Z5EwCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMzAwNTE2MTQzOTMwWjAyMTAwLgYDVQQFEyczMjEy\nNDUyOTcyMjY5NzY3MTU1Nzk3NTM1MTkwMDc5MjE5NTY3NTMwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAATLqZqMDIAdZMDz4AnHhQhFJt4n4Dx+yz43WtDpyR1TAmHa\npr4DLsb01QDSlpnetmvlj9/rqPo22tFK597m77Eoo0cwRTAOBgNVHQ8BAf8EBAMC\nBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMBQGA1UdEQQNMAuCCWxv\nY2FsaG9zdDAKBggqhkjOPQQDAgNHADBEAiBTPBFKeHMu434+CJdpsSP5OUEFiXoq\nx1wIpMwiuE6jkgIgct0yJ2351bRAdwkVDfJLIgjJyFswTDYxSG1GbYC1+ww=\n-----END CERTIFICATE-----\n"  1:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCAS+gAwIBAgIRAOPOFcvwad/BdnOBMTEdLgEwCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMjAwNTE5MTQzOTMwWjAyMTAwLgYDVQQFEyczMDI4\nMDQ4MTAyODQzNTcxNDA5NDYwNDU4NjU3OTAzNDg3OTk0ODkwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAATPLFO5PDWW3/hnmrRwiOzWTaQKyuVFTeEE+EQ6sPU/gp08\nmCURy9v266Wn2D3wheAf7lGX0FNM1lmE6EDjAC2JoycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDSAAwRQIhAMbvY0X+\n9PqgviHbHC4Bahb0tvGXplvfoLCInDWNWdvUAiBvJdyb+D9LUO2LQBX7DKv4Jttm\nTkQL9Vh8C2xyJqtj6w==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBpzCCAU2gAwIBAgIQNxflpomRuO6/MWaDQy2GmjAKBggqhkjOPQQDAjAxMS8w\nLQYDVQQFEyY3NzMyNjE3NjAyNDIwMTA3MjU2OTExOTQ4NTU4MjE5MzE2NzkyNzAe\nFw0yMDA1MTcxNDM5MzBaFw0zMDA1MTYxNDM5MzBaMDExLzAtBgNVBAUTJjczMjMx\nNjIwNDYyMTY2NTAxNTU0NDc1OTUyODMyMTA4MTM2MDkwMFkwEwYHKoZIzj0CAQYI\nKoZIzj0DAQcDQgAEF359xK0kOmM5Y5S5riK1KS9fU0hwq+9kQ1PHiqr6bYwRZy4P\n5TDywEBuIQCGBOfC6kbhsoxW+8KHg4AWlmO5nqNHMEUwDgYDVR0PAQH/BAQDAgWg\nMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAUBgNVHREEDTALgglsb2Nh\nbGhvc3QwCgYIKoZIzj0EAwIDSAAwRQIhAO/VrhGRkhTdOw1JSwjfV7cpZsRkFhLe\n+0E6Ttx8IEjJAiAClRXH/3Mwy8/oaEllAjEQWWq19cEg3N8et6bVRAmDXQ==\n-----END CERTIFICATE-----\n"  2:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCAS+gAwIBAgIRAP1ilYUCK0LHCiKVbZHsiwkwCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMjAwNTE5MTQzOTMwWjAyMTAwLgYDVQQFEyczMzY4\nMDY1NjA2NDI3Njc5NTY2MjYwMTU2MTI2MTcxNDQxNzUzNjkwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAARopwai3OTVbLQ+Fy2AQPBZr0yZQN5OgIRntnReYxJdfvbx\n75eeF4dxaBaMCvfT7+cH3CoiTLbB32FN5YYA5Ah3oycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDSAAwRQIhAPAZGCn5\nM/LlAwPnrGCD7JQQvw9iJ8anrZED1GWppus6AiBVky5MGNP4ywfJTj4fPtyBjkde\nNrb8WLWN/LwLYubXFA==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqjCCAU+gAwIBAgIRAI+CoZiSJ5p2zj+gtnL/PB8wCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMzAwNTE2MTQzOTMwWjAyMTAwLgYDVQQFEycxOTA3\nNTc4Nzk1NDQ3MTIwNzY0ODA5NjgyMzEwNjQ1NjY3MDkyNzkwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAATUyhVUmSaNoU84CZH3Uz9RufI5S4294EwdpgY7lke89uaQ\noVvC2racQlaJgX93tg2OoUYDowmvd0ABWsZb92Ero0cwRTAOBgNVHQ8BAf8EBAMC\nBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMBQGA1UdEQQNMAuCCWxv\nY2FsaG9zdDAKBggqhkjOPQQDAgNJADBGAiEA+B/9lS62OiD4pFsyZPB+AmQs0QQH\n2ngqSdH7HjM01GUCIQDDUYxSaBY0a0RQiRH5zyWpN4DNKvNpcyTtHwAeLoHqkQ==\n-----END CERTIFICATE-----\n"  3:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCAS+gAwIBAgIRAPmD8vjruFBEoQNtVqaPT70wCgYIKoZIzj0EAwIwMTEv\nMC0GA1UEBRMmNzczMjYxNzYwMjQyMDEwNzI1NjkxMTk0ODU1ODIxOTMxNjc5Mjcw\nHhcNMjAwNTE3MTQzOTMwWhcNMjAwNTE5MTQzOTMwWjAyMTAwLgYDVQQFEyczMzE2\nNjI4ODk5MDM1NzIzMDA3MjgzMDg0MTgyNDg5NDYxNzU5MzMwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAASMPjoKUJvjEbPGEBUQBjctCuQyJBBg2sYqBR+s7ompQbk8\nObq2GYCnpeHSjagKHxFGXhxn0H10z574K10cgLBXoycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDSAAwRQIgBVE5Hl6e\nX4NVr12HvuiYJKGjEr0xoA/lcKTkmnSS1IkCIQDY72WVl2n8Ra+Y+S2yQvYiPQPS\nvUfsukTYUzYlM6p4ow==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBpzCCAU6gAwIBAgIQb9ZqC4shOJ7i7Upfsio+JTAKBggqhkjOPQQDAjAxMS8w\nLQYDVQQFEyY3NzMyNjE3NjAyNDIwMTA3MjU2OTExOTQ4NTU4MjE5MzE2NzkyNzAe\nFw0yMDA1MTcxNDM5MzBaFw0zMDA1MTYxNDM5MzBaMDIxMDAuBgNVBAUTJzE0ODY1\nNzYwOTkwOTgzODQ2ODAzOTQ3NTQyMTEwMTg2NTcxMzE4OTBZMBMGByqGSM49AgEG\nCCqGSM49AwEHA0IABJzmSfwZK4hzo+N5CD0pF7bR45scdpIkz1+aNB5pg9C3e9eA\nsqNmHnHNJV/dCLp1VlhgqGHQFeEVQHouolAPtaqjRzBFMA4GA1UdDwEB/wQEAwIF\noDAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwFAYDVR0RBA0wC4IJbG9j\nYWxob3N0MAoGCCqGSM49BAMCA0cAMEQCIDIoewCxbMr6/o98KtL117LKVIVXfC1t\nIhKoL4Ue3ib6AiBDilyYCGv2ZTAAFqfmxsgcD1t/QoZHYIeoidJ0tgnmKg==\n-----END CERTIFICATE-----\n" ]
+
+
+GOT txn[0]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [0] cout[1] config[false]
+GOT txn[3]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [3] cout[1] config[false]2020/05/18 20:09:30 
+
+***************0[0]*****************
+
+2020/05/18 20:09:30 
+
+***************0[3]*****************
+
+
+GOT txn[1]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [1] cout[1] config[false]2020/05/18 20:09:30 
+
+***************0[1]*****************
+
+
+GOT txn[2]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [2] cout[1] config[false]2020/05/18 20:09:30 
+
+***************0[2]*****************
+
+
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+2020/05/18 20:09:31 0, 1, 110.855521ms
+2020/05/18 20:09:31 
+
+********************Bufferlen == 1**************
+
+2020/05/18 20:09:31 ch.blockout[3]
+{"level":"info","msg":"Created block [1]","channel":"multi-node-channel","node":3}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [1] (Raft index: 3) to ledger","channel":"multi-node-channel","node":3}
+
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+2020/05/18 20:09:31 0, 1, 123.121861ms
+2020/05/18 20:09:31 
+
+********************Bufferlen == 1**************
+
+2020/05/18 20:09:31 ch.blockout[0]
+{"level":"info","msg":"Created block [1]","channel":"multi-node-channel","node":0}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [1] (Raft index: 0) to ledger","channel":"multi-node-channel","node":0}
+
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+2020/05/18 20:09:31 0, 1, 120.208748ms
+2020/05/18 20:09:31 
+
+********************Bufferlen == 1**************
+
+2020/05/18 20:09:31 ch.blockout[1]
+{"level":"info","msg":"Created block [1]","channel":"multi-node-channel","node":1}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [1] (Raft index: 1) to ledger","channel":"multi-node-channel","node":1}
+
+GOT txn[3]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [3] cout[1] config[false]2020/05/18 20:09:31 
+
+***************1[3]*****************
+
+
+GOT txn[0]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [0] cout[1] config[false]2020/05/18 20:09:31 
+
+***************1[0]*****************
+
+
+GOT txn[2]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [2] cout[1] config[false]
+GOT txn[1]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [1] cout[1] config[false]2020/05/18 20:09:31 
+
+***************1[1]*****************
+
+
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+2020/05/18 20:09:31 0, 1, 166.051113ms
+2020/05/18 20:09:31 
+
+********************Bufferlen == 2**************
+
+2020/05/18 20:09:31 ch.blockout[2]
+2020/05/18 20:09:31 
+
+***************1[2]*****************
+
+{"level":"info","msg":"Created block [1]","channel":"multi-node-channel","node":2}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [1] (Raft index: 2) to ledger","channel":"multi-node-channel","node":2}
+
+
+AFTER DELETING DUPLICATE***
+B=4 A=1
+
+2020/05/18 20:09:31 1, 1, 85.336849ms
+2020/05/18 20:09:31 
+
+********************Bufferlen == 2**************
+
+2020/05/18 20:09:31 ch.blockout[3]
+
+
+AFTER DELETING DUPLICATE***
+B=4 A=1
+
+{"level":"info","msg":"Created block [2]","channel":"multi-node-channel","node":3}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [2] (Raft index: 3) to ledger","channel":"multi-node-channel","node":3}
+2020/05/18 20:09:31 1, 1, 58.55295ms
+
+
+AFTER DELETING DUPLICATE***
+B=4 A=1
+
+2020/05/18 20:09:31 
+
+********************Bufferlen == 2**************
+
+
+
+AFTER DELETING DUPLICATE***
+B=4 A=1
+
+{"level":"info","msg":"Created block [2]","channel":"multi-node-channel","node":2}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [2] (Raft index: 2) to ledger","channel":"multi-node-channel","node":2}
+2020/05/18 20:09:31 ch.blockout[1]
+{"level":"info","msg":"Created block [2]","channel":"multi-node-channel","node":0}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [2] (Raft index: 0) to ledger","channel":"multi-node-channel","node":0}
+2020/05/18 20:09:31 1, 1, 68.090634ms
+{"level":"info","msg":"Created block [2]","channel":"multi-node-channel","node":1}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [2] (Raft index: 1) to ledger","channel":"multi-node-channel","node":1}
+2020/05/18 20:09:31 
+
+********************Bufferlen == 2**************
+
+2020/05/18 20:09:31 ch.blockout[0]
+2020/05/18 20:09:31 1, 1, 38.066809ms
+2020/05/18 20:09:31 
+
+********************Bufferlen == 2**************
+
+2020/05/18 20:09:31 ch.blockout[2]
+
+GOT txn[3]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [3] cout[1] config[false]2020/05/18 20:09:31 
+
+***************2[3]*****************
+
+
+GOT txn[1]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [1] cout[1] config[false]2020/05/18 20:09:31 
+
+***************2[1]*****************
+
+
+GOT txn[0]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [0] cout[1] config[false]2020/05/18 20:09:31 
+
+***************2[0]*****************
+
+
+GOT txn[2]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [2] cout[1] config[false]2020/05/18 20:09:31 
+
+***************2[2]*****************
+
+
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+2020/05/18 20:09:31 2, 1, 65.806227ms
+2020/05/18 20:09:31 
+
+********************Bufferlen == 3**************
+
+2020/05/18 20:09:31 ch.blockout[3]
+
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+2020/05/18 20:09:31 2, 1, 66.580729ms
+2020/05/18 20:09:31 
+
+********************Bufferlen == 3**************
+
+2020/05/18 20:09:31 ch.blockout[0]
+
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+2020/05/18 20:09:31 2, 1, 72.304068ms
+2020/05/18 20:09:31 
+
+********************Bufferlen == 3**************
+
+2020/05/18 20:09:31 ch.blockout[1]
+{"level":"info","msg":"Created block [3]","channel":"multi-node-channel","node":0}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [3] (Raft index: 0) to ledger","channel":"multi-node-channel","node":0}
+{"level":"info","msg":"Created block [3]","channel":"multi-node-channel","node":3}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [3] (Raft index: 3) to ledger","channel":"multi-node-channel","node":3}
+{"level":"info","msg":"Created block [3]","channel":"multi-node-channel","node":1}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [3] (Raft index: 1) to ledger","channel":"multi-node-channel","node":1}
+
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+2020/05/18 20:09:31 2, 1, 84.475835ms
+2020/05/18 20:09:31 
+
+********************Bufferlen == 3**************
+
+2020/05/18 20:09:31 ch.blockout[2]
+{"level":"info","msg":"Created block [3]","channel":"multi-node-channel","node":2}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [3] (Raft index: 2) to ledger","channel":"multi-node-channel","node":2}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":2}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":2}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":3}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":3}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":0}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":0}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":1}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":1}
+[32m•[0mWRAPPER FIRED UP***********************8WRAPPER FIRED UP***********************8WRAPPER FIRED UP***********************8WRAPPER FIRED UP***********************8{"level":"info","msg":"Starting Hbbft node","channel":"multi-node-channel","node":1}
+
+
+CONSENTERS LIST :
+ map[0:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCAS+gAwIBAgIQceGNaqvh5vRE13NWXPFIODAKBggqhkjOPQQDAjAyMTAw\nLgYDVQQFEycxOTIyNDYzNzk0NjI3MTIzMTMyODE2NDc4MjU4MDk0NzU0NzYxNzAw\nHhcNMjAwNTE3MTQzOTMxWhcNMjAwNTE5MTQzOTMxWjAyMTAwLgYDVQQFEycxNTEz\nNzM4OTg1ODgwMDAyMDY4OTEyMTk1OTM2MTI5NTUzMDYwNDAwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAARgRjF9c5uIPj4MK7T/36kXF9hFB2Up35tNDIiOU8M642QA\nLKKrqRVDVU1imG7CtgqYYN+hq6DnuvTRtDmEnPVJoycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDSAAwRQIhAPUkK42g\ngwdOXIFcoWtyYeGhez3XvwI7oHbNeqZTTl7iAiA4wEqXjFeVO+d+V1UB9oJx8FI2\nIk4t33DBmIbmCwFMxA==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqjCCAVCgAwIBAgIRAIwqiXDCDuN7+aD+mcoMtcowCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTMwMDUxNjE0MzkzMVowMjEwMC4GA1UEBRMnMTg2\nMzEyNzgzNTAxNjc0Njc3OTc0MzI5NDk4MDAwNDA2OTE4NjAyMFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEi73GEsmu0xZ971g+QU8DCrFMPa1mo3IGHV+A+YOuz7+e\nG8F7NehXLlhVI5L6iFKoHDDGIBfkFv8ZQ8dkK/FylqNHMEUwDgYDVR0PAQH/BAQD\nAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAUBgNVHREEDTALggls\nb2NhbGhvc3QwCgYIKoZIzj0EAwIDSAAwRQIgKi+yyZ/bivdb+6oTtUonBNCwcKh5\njb1zrphChKCmSDoCIQD23JO6gA/qOAYxlIJEeLX7SvLyzn0twoqsq/MsiBCt/w==\n-----END CERTIFICATE-----\n"  1:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBijCCATCgAwIBAgIRALAYtph4Z11/78KrHF2ZOqwwCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTIwMDUxOTE0MzkzMVowMjEwMC4GA1UEBRMnMjM0\nMDcyNDQ1ODYxMjQxNzU4MzQ0NDI4OTI1Njg4NjA3MjI2NTQwMFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAELiVRHg4DpIt209hdnc4qwqAfg6qR8bI01NI3ZKAB7noc\nY8mI7c5vKO3s97pTm2W5HwxdbVLRygb+CozIVUHQnKMnMCUwDgYDVR0PAQH/BAQD\nAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0gAMEUCIQCjbXLN\nAe/AWc3YT67cVMqY8jdzXboU5vgYNeDrU71DcQIgLZi+IODFkK9vV/zAttQhC9GB\n1fx/O5p32YHbHTmCZ6Q=\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqDCCAU6gAwIBAgIQD6rWeq6T/cwpEiob2Q29QDAKBggqhkjOPQQDAjAyMTAw\nLgYDVQQFEycxOTIyNDYzNzk0NjI3MTIzMTMyODE2NDc4MjU4MDk0NzU0NzYxNzAw\nHhcNMjAwNTE3MTQzOTMxWhcNMzAwNTE2MTQzOTMxWjAxMS8wLQYDVQQFEyYyMDgy\nNTQ2MDU1ODI0NDk2OTMxNzM0MDAyNTExMjMyMDkxNjgwMDBZMBMGByqGSM49AgEG\nCCqGSM49AwEHA0IABJnqsR6URmjAqymCebF4ez9JTlOXgbQZ8zd6z/QcRdagv90a\nmNxtALt/6Jz7fo1i+12zjlaYFWHCyUQFXeb98xujRzBFMA4GA1UdDwEB/wQEAwIF\noDAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwFAYDVR0RBA0wC4IJbG9j\nYWxob3N0MAoGCCqGSM49BAMCA0gAMEUCIAUlvTUKoDK1sfewBF05twomkZDzsauS\n7B0Lj1/QiwUvAiEAoH4m8K/7UKbzYg8/Qlnyfv+twpk5wzbMD8O96aHo6iQ=\n-----END CERTIFICATE-----\n"  2:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBijCCATCgAwIBAgIRAISSCNqASB7AROJGQ9VzwqswCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTIwMDUxOTE0MzkzMVowMjEwMC4GA1UEBRMnMTc2\nMjE2MzUwMzU1NjcyNTA2NTEzOTM0MzQ4NzI3MDc3ODE0OTU1MFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEXM+3dfMgKf6u2T+ltF1bAfDOuAjs9bIuN+sQTW4STzGI\ni4xb4KaMtRexAJ77FgHD0rQBcZwpdTb8AxJjXz8Z6qMnMCUwDgYDVR0PAQH/BAQD\nAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0gAMEUCIB5jY7yG\n7tD8c9wv+ZKq6TfWjkm9DxdjKlh9ZskD9s0iAiEAkSH8fTakVMaPhHab2b/hOSQu\n9xnWP334tLraV2iHlc0=\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqjCCAU+gAwIBAgIQZAYMUze15euKc4vy78B3UTAKBggqhkjOPQQDAjAyMTAw\nLgYDVQQFEycxOTIyNDYzNzk0NjI3MTIzMTMyODE2NDc4MjU4MDk0NzU0NzYxNzAw\nHhcNMjAwNTE3MTQzOTMxWhcNMzAwNTE2MTQzOTMxWjAyMTAwLgYDVQQFEycxMzI5\nNTQyMDMzNDE3MzcxMDU2NDA1NDcxMjkyNDMyMzI5MjU1MjEwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAATD7c2rd2G9qJq0E9Cu3yh8WXNHqt7YaKFpaWsrJuiKVpSY\n8unheZwsnrn8/4XNZFDobEEuvYiBzqbRDLPrGPuTo0cwRTAOBgNVHQ8BAf8EBAMC\nBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMBQGA1UdEQQNMAuCCWxv\nY2FsaG9zdDAKBggqhkjOPQQDAgNJADBGAiEAyEeUhyumu6xwjQrXK+WYJjL+3D2k\njQIiPXhuRQJh41oCIQCtSCF/vMRxq196MmKWoxDTjoR/dytkW/KBvpSeY4pFBA==\n-----END CERTIFICATE-----\n"  3:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCATCgAwIBAgIRAJ9fLKUSuwbN/SRR0C7VvqMwCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTIwMDUxOTE0MzkzMVowMjEwMC4GA1UEBRMnMjEx\nODQxNDI1MDM1ODI4NjM5MzgyNjA0NDQ5OTE2MDQyNzIyOTc5MFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEv2IA+qXrhLfshNZY5Y5KqweX4BUgUMQXqzaVS4yzCa7f\n4GTwXvw+QFUDLWp6nfKpR1ftsR0l1O6VCxP/uUkNmaMnMCUwDgYDVR0PAQH/BAQD\nAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0cAMEQCICtmOb9T\nn8Aj3q+20fKrYO/W4yGOJKu58lvDz4HmbsqzAiBJLyuufIeUw867lDeAonbESpWu\n7vZOM2qg9WaThpQvTQ==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqzCCAVCgAwIBAgIRAL+wii4ZtK6luJ90JX6DFvYwCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTMwMDUxNjE0MzkzMVowMjEwMC4GA1UEBRMnMjU0\nNzk5MTk0MDY2OTk3Mzk3NjE1Nzc1MDgwODY5NzU4NDQxMjA2MFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEFxoqj8m/HNREHcdFI+HM/QS1yy66FYyirb9OMqr2o9m4\n6HOYSaE8qgWaxpJaDk01zUvSxN1cfFPGb0Y0ZIJGX6NHMEUwDgYDVR0PAQH/BAQD\nAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAUBgNVHREEDTALggls\nb2NhbGhvc3QwCgYIKoZIzj0EAwIDSQAwRgIhAIIa7XD+Vvgqw69aB8kM2jWl1Naz\nGmrbnu3vSZ67XQ66AiEA2w+DZne8KQ/Y9enopaa6aTlOMTWGlXck1JfRO4hh7g0=\n-----END CERTIFICATE-----\n" ]
+
+{"level":"info","msg":"Starting Hbbft node","channel":"multi-node-channel","node":2}
+
+
+CONSENTERS LIST :
+ map[0:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCAS+gAwIBAgIQceGNaqvh5vRE13NWXPFIODAKBggqhkjOPQQDAjAyMTAw\nLgYDVQQFEycxOTIyNDYzNzk0NjI3MTIzMTMyODE2NDc4MjU4MDk0NzU0NzYxNzAw\nHhcNMjAwNTE3MTQzOTMxWhcNMjAwNTE5MTQzOTMxWjAyMTAwLgYDVQQFEycxNTEz\nNzM4OTg1ODgwMDAyMDY4OTEyMTk1OTM2MTI5NTUzMDYwNDAwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAARgRjF9c5uIPj4MK7T/36kXF9hFB2Up35tNDIiOU8M642QA\nLKKrqRVDVU1imG7CtgqYYN+hq6DnuvTRtDmEnPVJoycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDSAAwRQIhAPUkK42g\ngwdOXIFcoWtyYeGhez3XvwI7oHbNeqZTTl7iAiA4wEqXjFeVO+d+V1UB9oJx8FI2\nIk4t33DBmIbmCwFMxA==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqjCCAVCgAwIBAgIRAIwqiXDCDuN7+aD+mcoMtcowCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTMwMDUxNjE0MzkzMVowMjEwMC4GA1UEBRMnMTg2\nMzEyNzgzNTAxNjc0Njc3OTc0MzI5NDk4MDAwNDA2OTE4NjAyMFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEi73GEsmu0xZ971g+QU8DCrFMPa1mo3IGHV+A+YOuz7+e\nG8F7NehXLlhVI5L6iFKoHDDGIBfkFv8ZQ8dkK/FylqNHMEUwDgYDVR0PAQH/BAQD\nAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAUBgNVHREEDTALggls\nb2NhbGhvc3QwCgYIKoZIzj0EAwIDSAAwRQIgKi+yyZ/bivdb+6oTtUonBNCwcKh5\njb1zrphChKCmSDoCIQD23JO6gA/qOAYxlIJEeLX7SvLyzn0twoqsq/MsiBCt/w==\n-----END CERTIFICATE-----\n"  1:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBijCCATCgAwIBAgIRALAYtph4Z11/78KrHF2ZOqwwCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTIwMDUxOTE0MzkzMVowMjEwMC4GA1UEBRMnMjM0\nMDcyNDQ1ODYxMjQxNzU4MzQ0NDI4OTI1Njg4NjA3MjI2NTQwMFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAELiVRHg4DpIt209hdnc4qwqAfg6qR8bI01NI3ZKAB7noc\nY8mI7c5vKO3s97pTm2W5HwxdbVLRygb+CozIVUHQnKMnMCUwDgYDVR0PAQH/BAQD\nAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0gAMEUCIQCjbXLN\nAe/AWc3YT67cVMqY8jdzXboU5vgYNeDrU71DcQIgLZi+IODFkK9vV/zAttQhC9GB\n1fx/O5p32YHbHTmCZ6Q=\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqDCCAU6gAwIBAgIQD6rWeq6T/cwpEiob2Q29QDAKBggqhkjOPQQDAjAyMTAw\nLgYDVQQFEycxOTIyNDYzNzk0NjI3MTIzMTMyODE2NDc4MjU4MDk0NzU0NzYxNzAw\nHhcNMjAwNTE3MTQzOTMxWhcNMzAwNTE2MTQzOTMxWjAxMS8wLQYDVQQFEyYyMDgy\nNTQ2MDU1ODI0NDk2OTMxNzM0MDAyNTExMjMyMDkxNjgwMDBZMBMGByqGSM49AgEG\nCCqGSM49AwEHA0IABJnqsR6URmjAqymCebF4ez9JTlOXgbQZ8zd6z/QcRdagv90a\nmNxtALt/6Jz7fo1i+12zjlaYFWHCyUQFXeb98xujRzBFMA4GA1UdDwEB/wQEAwIF\noDAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwFAYDVR0RBA0wC4IJbG9j\nYWxob3N0MAoGCCqGSM49BAMCA0gAMEUCIAUlvTUKoDK1sfewBF05twomkZDzsauS\n7B0Lj1/QiwUvAiEAoH4m8K/7UKbzYg8/Qlnyfv+twpk5wzbMD8O96aHo6iQ=\n-----END CERTIFICATE-----\n"  2:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBijCCATCgAwIBAgIRAISSCNqASB7AROJGQ9VzwqswCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTIwMDUxOTE0MzkzMVowMjEwMC4GA1UEBRMnMTc2\nMjE2MzUwMzU1NjcyNTA2NTEzOTM0MzQ4NzI3MDc3ODE0OTU1MFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEXM+3dfMgKf6u2T+ltF1bAfDOuAjs9bIuN+sQTW4STzGI\ni4xb4KaMtRexAJ77FgHD0rQBcZwpdTb8AxJjXz8Z6qMnMCUwDgYDVR0PAQH/BAQD\nAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0gAMEUCIB5jY7yG\n7tD8c9wv+ZKq6TfWjkm9DxdjKlh9ZskD9s0iAiEAkSH8fTakVMaPhHab2b/hOSQu\n9xnWP334tLraV2iHlc0=\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqjCCAU+gAwIBAgIQZAYMUze15euKc4vy78B3UTAKBggqhkjOPQQDAjAyMTAw\nLgYDVQQFEycxOTIyNDYzNzk0NjI3MTIzMTMyODE2NDc4MjU4MDk0NzU0NzYxNzAw\nHhcNMjAwNTE3MTQzOTMxWhcNMzAwNTE2MTQzOTMxWjAyMTAwLgYDVQQFEycxMzI5\nNTQyMDMzNDE3MzcxMDU2NDA1NDcxMjkyNDMyMzI5MjU1MjEwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAATD7c2rd2G9qJq0E9Cu3yh8WXNHqt7YaKFpaWsrJuiKVpSY\n8unheZwsnrn8/4XNZFDobEEuvYiBzqbRDLPrGPuTo0cwRTAOBgNVHQ8BAf8EBAMC\nBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMBQGA1UdEQQNMAuCCWxv\nY2FsaG9zdDAKBggqhkjOPQQDAgNJADBGAiEAyEeUhyumu6xwjQrXK+WYJjL+3D2k\njQIiPXhuRQJh41oCIQCtSCF/vMRxq196MmKWoxDTjoR/dytkW/KBvpSeY4pFBA==\n-----END CERTIFICATE-----\n"  3:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCATCgAwIBAgIRAJ9fLKUSuwbN/SRR0C7VvqMwCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTIwMDUxOTE0MzkzMVowMjEwMC4GA1UEBRMnMjEx\nODQxNDI1MDM1ODI4NjM5MzgyNjA0NDQ5OTE2MDQyNzIyOTc5MFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEv2IA+qXrhLfshNZY5Y5KqweX4BUgUMQXqzaVS4yzCa7f\n4GTwXvw+QFUDLWp6nfKpR1ftsR0l1O6VCxP/uUkNmaMnMCUwDgYDVR0PAQH/BAQD\nAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0cAMEQCICtmOb9T\nn8Aj3q+20fKrYO/W4yGOJKu58lvDz4HmbsqzAiBJLyuufIeUw867lDeAonbESpWu\n7vZOM2qg9WaThpQvTQ==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqzCCAVCgAwIBAgIRAL+wii4ZtK6luJ90JX6DFvYwCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTMwMDUxNjE0MzkzMVowMjEwMC4GA1UEBRMnMjU0\nNzk5MTk0MDY2OTk3Mzk3NjE1Nzc1MDgwODY5NzU4NDQxMjA2MFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEFxoqj8m/HNREHcdFI+HM/QS1yy66FYyirb9OMqr2o9m4\n6HOYSaE8qgWaxpJaDk01zUvSxN1cfFPGb0Y0ZIJGX6NHMEUwDgYDVR0PAQH/BAQD\nAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAUBgNVHREEDTALggls\nb2NhbGhvc3QwCgYIKoZIzj0EAwIDSQAwRgIhAIIa7XD+Vvgqw69aB8kM2jWl1Naz\nGmrbnu3vSZ67XQ66AiEA2w+DZne8KQ/Y9enopaa6aTlOMTWGlXck1JfRO4hh7g0=\n-----END CERTIFICATE-----\n" ]
+
+{"level":"info","msg":"Starting Hbbft node","channel":"multi-node-channel","node":3}
+
+
+CONSENTERS LIST :
+ map[0:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCAS+gAwIBAgIQceGNaqvh5vRE13NWXPFIODAKBggqhkjOPQQDAjAyMTAw\nLgYDVQQFEycxOTIyNDYzNzk0NjI3MTIzMTMyODE2NDc4MjU4MDk0NzU0NzYxNzAw\nHhcNMjAwNTE3MTQzOTMxWhcNMjAwNTE5MTQzOTMxWjAyMTAwLgYDVQQFEycxNTEz\nNzM4OTg1ODgwMDAyMDY4OTEyMTk1OTM2MTI5NTUzMDYwNDAwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAARgRjF9c5uIPj4MK7T/36kXF9hFB2Up35tNDIiOU8M642QA\nLKKrqRVDVU1imG7CtgqYYN+hq6DnuvTRtDmEnPVJoycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDSAAwRQIhAPUkK42g\ngwdOXIFcoWtyYeGhez3XvwI7oHbNeqZTTl7iAiA4wEqXjFeVO+d+V1UB9oJx8FI2\nIk4t33DBmIbmCwFMxA==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqjCCAVCgAwIBAgIRAIwqiXDCDuN7+aD+mcoMtcowCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTMwMDUxNjE0MzkzMVowMjEwMC4GA1UEBRMnMTg2\nMzEyNzgzNTAxNjc0Njc3OTc0MzI5NDk4MDAwNDA2OTE4NjAyMFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEi73GEsmu0xZ971g+QU8DCrFMPa1mo3IGHV+A+YOuz7+e\nG8F7NehXLlhVI5L6iFKoHDDGIBfkFv8ZQ8dkK/FylqNHMEUwDgYDVR0PAQH/BAQD\nAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAUBgNVHREEDTALggls\nb2NhbGhvc3QwCgYIKoZIzj0EAwIDSAAwRQIgKi+yyZ/bivdb+6oTtUonBNCwcKh5\njb1zrphChKCmSDoCIQD23JO6gA/qOAYxlIJEeLX7SvLyzn0twoqsq/MsiBCt/w==\n-----END CERTIFICATE-----\n"  1:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBijCCATCgAwIBAgIRALAYtph4Z11/78KrHF2ZOqwwCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTIwMDUxOTE0MzkzMVowMjEwMC4GA1UEBRMnMjM0\nMDcyNDQ1ODYxMjQxNzU4MzQ0NDI4OTI1Njg4NjA3MjI2NTQwMFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAELiVRHg4DpIt209hdnc4qwqAfg6qR8bI01NI3ZKAB7noc\nY8mI7c5vKO3s97pTm2W5HwxdbVLRygb+CozIVUHQnKMnMCUwDgYDVR0PAQH/BAQD\nAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0gAMEUCIQCjbXLN\nAe/AWc3YT67cVMqY8jdzXboU5vgYNeDrU71DcQIgLZi+IODFkK9vV/zAttQhC9GB\n1fx/O5p32YHbHTmCZ6Q=\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqDCCAU6gAwIBAgIQD6rWeq6T/cwpEiob2Q29QDAKBggqhkjOPQQDAjAyMTAw\nLgYDVQQFEycxOTIyNDYzNzk0NjI3MTIzMTMyODE2NDc4MjU4MDk0NzU0NzYxNzAw\nHhcNMjAwNTE3MTQzOTMxWhcNMzAwNTE2MTQzOTMxWjAxMS8wLQYDVQQFEyYyMDgy\nNTQ2MDU1ODI0NDk2OTMxNzM0MDAyNTExMjMyMDkxNjgwMDBZMBMGByqGSM49AgEG\nCCqGSM49AwEHA0IABJnqsR6URmjAqymCebF4ez9JTlOXgbQZ8zd6z/QcRdagv90a\nmNxtALt/6Jz7fo1i+12zjlaYFWHCyUQFXeb98xujRzBFMA4GA1UdDwEB/wQEAwIF\noDAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwFAYDVR0RBA0wC4IJbG9j\nYWxob3N0MAoGCCqGSM49BAMCA0gAMEUCIAUlvTUKoDK1sfewBF05twomkZDzsauS\n7B0Lj1/QiwUvAiEAoH4m8K/7UKbzYg8/Qlnyfv+twpk5wzbMD8O96aHo6iQ=\n-----END CERTIFICATE-----\n"  2:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBijCCATCgAwIBAgIRAISSCNqASB7AROJGQ9VzwqswCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTIwMDUxOTE0MzkzMVowMjEwMC4GA1UEBRMnMTc2\nMjE2MzUwMzU1NjcyNTA2NTEzOTM0MzQ4NzI3MDc3ODE0OTU1MFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEXM+3dfMgKf6u2T+ltF1bAfDOuAjs9bIuN+sQTW4STzGI\ni4xb4KaMtRexAJ77FgHD0rQBcZwpdTb8AxJjXz8Z6qMnMCUwDgYDVR0PAQH/BAQD\nAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0gAMEUCIB5jY7yG\n7tD8c9wv+ZKq6TfWjkm9DxdjKlh9ZskD9s0iAiEAkSH8fTakVMaPhHab2b/hOSQu\n9xnWP334tLraV2iHlc0=\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqjCCAU+gAwIBAgIQZAYMUze15euKc4vy78B3UTAKBggqhkjOPQQDAjAyMTAw\nLgYDVQQFEycxOTIyNDYzNzk0NjI3MTIzMTMyODE2NDc4MjU4MDk0NzU0NzYxNzAw\nHhcNMjAwNTE3MTQzOTMxWhcNMzAwNTE2MTQzOTMxWjAyMTAwLgYDVQQFEycxMzI5\nNTQyMDMzNDE3MzcxMDU2NDA1NDcxMjkyNDMyMzI5MjU1MjEwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAATD7c2rd2G9qJq0E9Cu3yh8WXNHqt7YaKFpaWsrJuiKVpSY\n8unheZwsnrn8/4XNZFDobEEuvYiBzqbRDLPrGPuTo0cwRTAOBgNVHQ8BAf8EBAMC\nBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMBQGA1UdEQQNMAuCCWxv\nY2FsaG9zdDAKBggqhkjOPQQDAgNJADBGAiEAyEeUhyumu6xwjQrXK+WYJjL+3D2k\njQIiPXhuRQJh41oCIQCtSCF/vMRxq196MmKWoxDTjoR/dytkW/KBvpSeY4pFBA==\n-----END CERTIFICATE-----\n"  3:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCATCgAwIBAgIRAJ9fLKUSuwbN/SRR0C7VvqMwCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTIwMDUxOTE0MzkzMVowMjEwMC4GA1UEBRMnMjEx\nODQxNDI1MDM1ODI4NjM5MzgyNjA0NDQ5OTE2MDQyNzIyOTc5MFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEv2IA+qXrhLfshNZY5Y5KqweX4BUgUMQXqzaVS4yzCa7f\n4GTwXvw+QFUDLWp6nfKpR1ftsR0l1O6VCxP/uUkNmaMnMCUwDgYDVR0PAQH/BAQD\nAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0cAMEQCICtmOb9T\nn8Aj3q+20fKrYO/W4yGOJKu58lvDz4HmbsqzAiBJLyuufIeUw867lDeAonbESpWu\n7vZOM2qg9WaThpQvTQ==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqzCCAVCgAwIBAgIRAL+wii4ZtK6luJ90JX6DFvYwCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTMwMDUxNjE0MzkzMVowMjEwMC4GA1UEBRMnMjU0\nNzk5MTk0MDY2OTk3Mzk3NjE1Nzc1MDgwODY5NzU4NDQxMjA2MFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEFxoqj8m/HNREHcdFI+HM/QS1yy66FYyirb9OMqr2o9m4\n6HOYSaE8qgWaxpJaDk01zUvSxN1cfFPGb0Y0ZIJGX6NHMEUwDgYDVR0PAQH/BAQD\nAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAUBgNVHREEDTALggls\nb2NhbGhvc3QwCgYIKoZIzj0EAwIDSQAwRgIhAIIa7XD+Vvgqw69aB8kM2jWl1Naz\nGmrbnu3vSZ67XQ66AiEA2w+DZne8KQ/Y9enopaa6aTlOMTWGlXck1JfRO4hh7g0=\n-----END CERTIFICATE-----\n" ]
+
+{"level":"info","msg":"Starting Hbbft node","channel":"multi-node-channel","node":0}
+
+
+CONSENTERS LIST :
+ map[0:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCAS+gAwIBAgIQceGNaqvh5vRE13NWXPFIODAKBggqhkjOPQQDAjAyMTAw\nLgYDVQQFEycxOTIyNDYzNzk0NjI3MTIzMTMyODE2NDc4MjU4MDk0NzU0NzYxNzAw\nHhcNMjAwNTE3MTQzOTMxWhcNMjAwNTE5MTQzOTMxWjAyMTAwLgYDVQQFEycxNTEz\nNzM4OTg1ODgwMDAyMDY4OTEyMTk1OTM2MTI5NTUzMDYwNDAwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAARgRjF9c5uIPj4MK7T/36kXF9hFB2Up35tNDIiOU8M642QA\nLKKrqRVDVU1imG7CtgqYYN+hq6DnuvTRtDmEnPVJoycwJTAOBgNVHQ8BAf8EBAMC\nBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwCgYIKoZIzj0EAwIDSAAwRQIhAPUkK42g\ngwdOXIFcoWtyYeGhez3XvwI7oHbNeqZTTl7iAiA4wEqXjFeVO+d+V1UB9oJx8FI2\nIk4t33DBmIbmCwFMxA==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqjCCAVCgAwIBAgIRAIwqiXDCDuN7+aD+mcoMtcowCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTMwMDUxNjE0MzkzMVowMjEwMC4GA1UEBRMnMTg2\nMzEyNzgzNTAxNjc0Njc3OTc0MzI5NDk4MDAwNDA2OTE4NjAyMFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEi73GEsmu0xZ971g+QU8DCrFMPa1mo3IGHV+A+YOuz7+e\nG8F7NehXLlhVI5L6iFKoHDDGIBfkFv8ZQ8dkK/FylqNHMEUwDgYDVR0PAQH/BAQD\nAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAUBgNVHREEDTALggls\nb2NhbGhvc3QwCgYIKoZIzj0EAwIDSAAwRQIgKi+yyZ/bivdb+6oTtUonBNCwcKh5\njb1zrphChKCmSDoCIQD23JO6gA/qOAYxlIJEeLX7SvLyzn0twoqsq/MsiBCt/w==\n-----END CERTIFICATE-----\n"  1:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBijCCATCgAwIBAgIRALAYtph4Z11/78KrHF2ZOqwwCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTIwMDUxOTE0MzkzMVowMjEwMC4GA1UEBRMnMjM0\nMDcyNDQ1ODYxMjQxNzU4MzQ0NDI4OTI1Njg4NjA3MjI2NTQwMFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAELiVRHg4DpIt209hdnc4qwqAfg6qR8bI01NI3ZKAB7noc\nY8mI7c5vKO3s97pTm2W5HwxdbVLRygb+CozIVUHQnKMnMCUwDgYDVR0PAQH/BAQD\nAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0gAMEUCIQCjbXLN\nAe/AWc3YT67cVMqY8jdzXboU5vgYNeDrU71DcQIgLZi+IODFkK9vV/zAttQhC9GB\n1fx/O5p32YHbHTmCZ6Q=\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqDCCAU6gAwIBAgIQD6rWeq6T/cwpEiob2Q29QDAKBggqhkjOPQQDAjAyMTAw\nLgYDVQQFEycxOTIyNDYzNzk0NjI3MTIzMTMyODE2NDc4MjU4MDk0NzU0NzYxNzAw\nHhcNMjAwNTE3MTQzOTMxWhcNMzAwNTE2MTQzOTMxWjAxMS8wLQYDVQQFEyYyMDgy\nNTQ2MDU1ODI0NDk2OTMxNzM0MDAyNTExMjMyMDkxNjgwMDBZMBMGByqGSM49AgEG\nCCqGSM49AwEHA0IABJnqsR6URmjAqymCebF4ez9JTlOXgbQZ8zd6z/QcRdagv90a\nmNxtALt/6Jz7fo1i+12zjlaYFWHCyUQFXeb98xujRzBFMA4GA1UdDwEB/wQEAwIF\noDAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwFAYDVR0RBA0wC4IJbG9j\nYWxob3N0MAoGCCqGSM49BAMCA0gAMEUCIAUlvTUKoDK1sfewBF05twomkZDzsauS\n7B0Lj1/QiwUvAiEAoH4m8K/7UKbzYg8/Qlnyfv+twpk5wzbMD8O96aHo6iQ=\n-----END CERTIFICATE-----\n"  2:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBijCCATCgAwIBAgIRAISSCNqASB7AROJGQ9VzwqswCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTIwMDUxOTE0MzkzMVowMjEwMC4GA1UEBRMnMTc2\nMjE2MzUwMzU1NjcyNTA2NTEzOTM0MzQ4NzI3MDc3ODE0OTU1MFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEXM+3dfMgKf6u2T+ltF1bAfDOuAjs9bIuN+sQTW4STzGI\ni4xb4KaMtRexAJ77FgHD0rQBcZwpdTb8AxJjXz8Z6qMnMCUwDgYDVR0PAQH/BAQD\nAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0gAMEUCIB5jY7yG\n7tD8c9wv+ZKq6TfWjkm9DxdjKlh9ZskD9s0iAiEAkSH8fTakVMaPhHab2b/hOSQu\n9xnWP334tLraV2iHlc0=\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqjCCAU+gAwIBAgIQZAYMUze15euKc4vy78B3UTAKBggqhkjOPQQDAjAyMTAw\nLgYDVQQFEycxOTIyNDYzNzk0NjI3MTIzMTMyODE2NDc4MjU4MDk0NzU0NzYxNzAw\nHhcNMjAwNTE3MTQzOTMxWhcNMzAwNTE2MTQzOTMxWjAyMTAwLgYDVQQFEycxMzI5\nNTQyMDMzNDE3MzcxMDU2NDA1NDcxMjkyNDMyMzI5MjU1MjEwWTATBgcqhkjOPQIB\nBggqhkjOPQMBBwNCAATD7c2rd2G9qJq0E9Cu3yh8WXNHqt7YaKFpaWsrJuiKVpSY\n8unheZwsnrn8/4XNZFDobEEuvYiBzqbRDLPrGPuTo0cwRTAOBgNVHQ8BAf8EBAMC\nBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMBQGA1UdEQQNMAuCCWxv\nY2FsaG9zdDAKBggqhkjOPQQDAgNJADBGAiEAyEeUhyumu6xwjQrXK+WYJjL+3D2k\njQIiPXhuRQJh41oCIQCtSCF/vMRxq196MmKWoxDTjoR/dytkW/KBvpSeY4pFBA==\n-----END CERTIFICATE-----\n"  3:host:"localhost" port:7051 client_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBiTCCATCgAwIBAgIRAJ9fLKUSuwbN/SRR0C7VvqMwCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTIwMDUxOTE0MzkzMVowMjEwMC4GA1UEBRMnMjEx\nODQxNDI1MDM1ODI4NjM5MzgyNjA0NDQ5OTE2MDQyNzIyOTc5MFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEv2IA+qXrhLfshNZY5Y5KqweX4BUgUMQXqzaVS4yzCa7f\n4GTwXvw+QFUDLWp6nfKpR1ftsR0l1O6VCxP/uUkNmaMnMCUwDgYDVR0PAQH/BAQD\nAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMCMAoGCCqGSM49BAMCA0cAMEQCICtmOb9T\nn8Aj3q+20fKrYO/W4yGOJKu58lvDz4HmbsqzAiBJLyuufIeUw867lDeAonbESpWu\n7vZOM2qg9WaThpQvTQ==\n-----END CERTIFICATE-----\n" server_tls_cert:"-----BEGIN CERTIFICATE-----\nMIIBqzCCAVCgAwIBAgIRAL+wii4ZtK6luJ90JX6DFvYwCgYIKoZIzj0EAwIwMjEw\nMC4GA1UEBRMnMTkyMjQ2Mzc5NDYyNzEyMzEzMjgxNjQ3ODI1ODA5NDc1NDc2MTcw\nMB4XDTIwMDUxNzE0MzkzMVoXDTMwMDUxNjE0MzkzMVowMjEwMC4GA1UEBRMnMjU0\nNzk5MTk0MDY2OTk3Mzk3NjE1Nzc1MDgwODY5NzU4NDQxMjA2MFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEFxoqj8m/HNREHcdFI+HM/QS1yy66FYyirb9OMqr2o9m4\n6HOYSaE8qgWaxpJaDk01zUvSxN1cfFPGb0Y0ZIJGX6NHMEUwDgYDVR0PAQH/BAQD\nAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAUBgNVHREEDTALggls\nb2NhbGhvc3QwCgYIKoZIzj0EAwIDSQAwRgIhAIIa7XD+Vvgqw69aB8kM2jWl1Naz\nGmrbnu3vSZ67XQ66AiEA2w+DZne8KQ/Y9enopaa6aTlOMTWGlXck1JfRO4hh7g0=\n-----END CERTIFICATE-----\n" ]
+
+
+####ISCONFIG[true]
+{"level":"info","msg":"Received config transaction, pause accepting transaction till it is committed","channel":"multi-node-channel","node":0}
+
+GOT txn[0]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [0] cout[1] config[true]
+GOT txn[0]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [0] cout[1] config[false]2020/05/18 20:09:31 
+
+***************0[0]*****************
+
+
+####ISCONFIG[true]
+
+####ISCONFIG[true]
+
+####ISCONFIG[true]
+{"level":"info","msg":"Received config transaction, pause accepting transaction till it is committed","channel":"multi-node-channel","node":3}
+
+GOT txn[3]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [3] cout[1] config[true]
+GOT txn[3]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [3] cout[1] config[false]{"level":"info","msg":"Received config transaction, pause accepting transaction till it is committed","channel":"multi-node-channel","node":1}
+
+GOT txn[1]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [1] cout[1] config[true]2020/05/18 20:09:31 
+
+***************0[3]*****************
+
+
+GOT txn[1]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [1] cout[1] config[false]2020/05/18 20:09:31 
+
+***************0[1]*****************
+
+{"level":"info","msg":"Received config transaction, pause accepting transaction till it is committed","channel":"multi-node-channel","node":2}
+
+GOT txn[2]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [2] cout[1] config[true]
+GOT txn[2]batchsize[1]
+
+
+ Triggering BLOCK CHAIN [2] cout[1] config[false]2020/05/18 20:09:31 
+
+***************0[2]*****************
+
+
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+2020/05/18 20:09:31 0, 1, 97.406253ms
+
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+2020/05/18 20:09:31 
+
+********************Bufferlen == 2**************
+
+2020/05/18 20:09:31 ch.blockout[0]
+2020/05/18 20:09:31 
+
+***************1[0]*****************
+
+2020/05/18 20:09:31 0, 1, 93.39261ms
+2020/05/18 20:09:31 
+
+********************Bufferlen == 2**************
+
+2020/05/18 20:09:31 ch.blockout[1]
+2020/05/18 20:09:31 
+
+***************1[1]*****************
+
+yes config{"level":"info","msg":"Created block [1]","channel":"multi-node-channel","node":1}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [1] (Raft index: 1) to ledger","channel":"multi-node-channel","node":1}
+in write config blockpagal
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+2020/05/18 20:09:31 0, 1, 87.084641ms
+2020/05/18 20:09:31 
+
+********************Bufferlen == 2**************
+
+2020/05/18 20:09:31 ch.blockout[2]
+2020/05/18 20:09:31 
+
+***************1[2]*****************
+
+2020/05/18 20:09:31 0, 1, 103.791279ms
+2020/05/18 20:09:31 
+
+********************Bufferlen == 2**************
+
+2020/05/18 20:09:31 ch.blockout[3]
+2020/05/18 20:09:31 
+
+***************1[3]*****************
+
+yes config{"level":"info","msg":"Created block [1]","channel":"multi-node-channel","node":0}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [1] (Raft index: 0) to ledger","channel":"multi-node-channel","node":0}
+in write config blockpagalyes config{"level":"info","msg":"Created block [1]","channel":"multi-node-channel","node":2}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [1] (Raft index: 2) to ledger","channel":"multi-node-channel","node":2}
+in write config blockpagalyes config{"level":"info","msg":"Created block [1]","channel":"multi-node-channel","node":3}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [1] (Raft index: 3) to ledger","channel":"multi-node-channel","node":3}
+in write config blockpagal
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+2020/05/18 20:09:31 1, 1, 80.600767ms
+2020/05/18 20:09:31 
+
+********************Bufferlen == 2**************
+
+2020/05/18 20:09:31 ch.blockout[0]
+yes config2020/05/18 20:09:31 1, 1, 76.746917ms
+2020/05/18 20:09:31 
+
+********************Bufferlen == 2**************
+
+2020/05/18 20:09:31 ch.blockout[2]
+{"level":"info","msg":"Created block [2]","channel":"multi-node-channel","node":0}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [2] (Raft index: 0) to ledger","channel":"multi-node-channel","node":0}
+2020/05/18 20:09:31 1, 1, 80.423057ms
+in write config blockyes configpagal2020/05/18 20:09:31 
+
+********************Bufferlen == 2**************
+
+2020/05/18 20:09:31 ch.blockout[1]
+{"level":"info","msg":"Created block [2]","channel":"multi-node-channel","node":1}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [2] (Raft index: 1) to ledger","channel":"multi-node-channel","node":1}
+yes configin write config blockpagal{"level":"info","msg":"Created block [2]","channel":"multi-node-channel","node":2}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [2] (Raft index: 2) to ledger","channel":"multi-node-channel","node":2}
+in write config blockpagal
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+2020/05/18 20:09:31 1, 1, 150.066697ms
+2020/05/18 20:09:31 
+
+********************Bufferlen == 2**************
+
+2020/05/18 20:09:31 ch.blockout[3]
+yes config{"level":"info","msg":"Created block [2]","channel":"multi-node-channel","node":3}
+
+
+
+
+
+**********writting BLock***************
+
+
+
+{"level":"info","msg":"Writing block [2] (Raft index: 3) to ledger","channel":"multi-node-channel","node":3}
+in write config blockpagal{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":2}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":3}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":2}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":3}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":0}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":0}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":1}
+[1mSTEP[0m: Submitting first tx to cut the block
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":1}
+
+[90m------------------------------[0m
+[91m[1m• Failure [10.312 seconds][0m
+Chain
+[90m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/chain_test.go:69[0m
+  4-node hbbft cluster
+  [90m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/chain_test.go:233[0m
+    when reconfiguring raft cluster
+    [90m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/chain_test.go:374[0m
+      channel creation
+      [90m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/chain_test.go:471[0m
+        [91m[1msucceeds with valid config metadata [It][0m
+        [90m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/chain_test.go:472[0m
+
+        [91mTimed out after 10.000s.
+        Expected
+            <int>: 2
+        to equal
+            <int>: 1[0m
+
+        /home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/chain_test.go:484
+[90m------------------------------[0m
+
+
+[91m[1mSummarizing 1 Failure:[0m
+
+[91m[1m[Fail] [0m[90mChain [0m[0m4-node hbbft cluster [0m[90mwhen reconfiguring raft cluster [0m[0mchannel creation [0m[91m[1m[It] succeeds with valid config metadata [0m
+[37m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/chain_test.go:484[0m
+
+[1m[91mRan 14 of 14 Specs in 10.983 seconds[0m
+[1m[91mFAIL![0m -- [32m[1m13 Passed[0m | [91m[1m1 Failed[0m | [33m[1m0 Pending[0m | [36m[1m0 Skipped[0m
+--- FAIL: TestHbbft (10.98s)
+FAIL
+
+Ginkgo ran 1 suite in 17.311461241s
+Test Suite Failed

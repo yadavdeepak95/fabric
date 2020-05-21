@@ -283,3 +283,7 @@ func TestCheckConfigMetadata(t *testing.T) {
 		assert.Regexp(t, testCase.errRegex, err)
 	}
 }
+
+func TestRaftPeers(t *testing.T) {
+
+}

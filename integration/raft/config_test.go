@@ -17,7 +17,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"sync"
 	"syscall"
 	"time"
 
@@ -162,6 +161,7 @@ var _ = Describe("EndToEnd reconfiguration and onboarding", func() {
 			ordererRunner := network.OrdererGroupRunner()
 			process := ifrit.Invoke(ordererRunner)
 			Eventually(process.Wait, network.EventuallyTimeout).Should(Receive()) // orderer process should exit
+			network.Cleanup()
 			os.RemoveAll(testDir)
 
 			By("Starting orderer with correct genesis block")
@@ -1556,30 +1556,11 @@ func refreshOrdererPEMs(n *nwo.Network) []*certificateChange {
 
 // assertBlockReception asserts that the given orderers have expected heights for the given channel--> height mapping
 func assertBlockReception(expectedHeightsPerChannel map[string]int, orderers []*nwo.Orderer, p *nwo.Peer, n *nwo.Network) {
-	assertReception := func(channelName string, blockSeq int) {
-		var wg sync.WaitGroup
-		wg.Add(len(orderers))
-		for _, orderer := range orderers {
-			go func(orderer *nwo.Orderer) {
-				defer GinkgoRecover()
-				defer wg.Done()
-				waitForBlockReception(orderer, p, n, channelName, blockSeq)
-			}(orderer)
-		}
-		wg.Wait()
-	}
-
-	var wg sync.WaitGroup
-	wg.Add(len(expectedHeightsPerChannel))
-
 	for channelName, blockSeq := range expectedHeightsPerChannel {
-		go func(channelName string, blockSeq int) {
-			defer GinkgoRecover()
-			defer wg.Done()
-			assertReception(channelName, blockSeq)
-		}(channelName, blockSeq)
+		for _, orderer := range orderers {
+			waitForBlockReception(orderer, p, n, channelName, blockSeq)
+		}
 	}
-	wg.Wait()
 }
 
 func waitForBlockReception(o *nwo.Orderer, submitter *nwo.Peer, network *nwo.Network, channelName string, blockSeq int) {

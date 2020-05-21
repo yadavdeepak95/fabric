@@ -7,6 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package broadcast
 
 import (
+	"fmt"
 	"io"
 	"time"
 
@@ -146,7 +147,7 @@ func (bh *Handler) ProcessMessage(msg *cb.Envelope, addr string) (resp *ab.Broad
 		tracker.Record(resp)
 	}()
 	tracker.BeginValidate()
-
+	fmt.Printf("In process msg %v", msg)
 	chdr, isConfig, processor, err := bh.SupportRegistrar.BroadcastChannelSupport(msg)
 	if chdr != nil {
 		tracker.ChannelID = chdr.ChannelId

@@ -1,0 +1,18 @@
+// election tick can be used as batchsize what say?
+- chain.go // submitrequest : leader -- can be used as height---- or do we need height 
+- chain.go // halt errored and waitready isrunning
+- check with config txns 
+- clear buffer
+- why blocking
++ default batchsize
++ wrapper.go // random txns me if less then batchsize then also do someting
++ how we are going to block everthing
++ chain.go // Make send threads
+
+
+//todo read channel carefully 
+plan tomorrow test and make case for hbbft
+day after tomorrow start testing with test network 
+//DONE
+    constenter testing done ----- icr not working test 9    
+    txn - commiting

@@ -133,7 +133,7 @@ cd ../../../test-network
 
 You can use the `peer` CLI to create a chaincode package in the required format. The `peer` binaries are located in the `bin` folder of the `fabric-samples` repository. Use the following command to add those binaries to your CLI Path:
 ```
-export PATH=${PWD}/../bin:$PATH
+export PATH=${PWD}/../bin:${PWD}:$PATH
 ```
 You also need to set the `FABRIC_CFG_PATH` to point to the `core.yaml` file in the `fabric-samples` repository:
 ```
@@ -209,7 +209,7 @@ cd ../../../test-network
 
 You can use the `peer` CLI to create a chaincode package in the required format. The `peer` binaries are located in the `bin` folder of the `fabric-samples` repository. Use the following command to add those binaries to your CLI Path:
 ```
-export PATH=${PWD}/../bin:$PATH
+export PATH=${PWD}/../bin:${PWD}:$PATH
 ```
 You also need to set the `FABRIC_CFG_PATH` to point to the `core.yaml` file in the `fabric-samples` repository:
 ```
@@ -265,7 +265,7 @@ cd ../../../test-network
 
 You can use the `peer` CLI to create a chaincode package in the required format. The `peer` binaries are located in the `bin` folder of the `fabric-samples` repository. Use the following command to add those binaries to your CLI Path:
 ```
-export PATH=${PWD}/../bin:$PATH
+export PATH=${PWD}/../bin:${PWD}:$PATH
 ```
 You also need to set the `FABRIC_CFG_PATH` to point to the `core.yaml` file in the `fabric-samples` repository:
 ```
@@ -347,7 +347,7 @@ Package ID: fabcar_1:69de748301770f6ef64b42aa6bb6cb291df20aa39542c3ef94008615704
 
 We are going to use the package ID when we approve the chaincode, so let's go ahead and save it as an environment variable. Paste the package ID returned by `peer lifecycle chaincode queryinstalled` into the command below. **Note:** The package ID will not be the same for all users, so you need to complete this step using the package ID returned from your command window in the previous step.
 ```
-export CC_PACKAGE_ID=fabcar_1:69de748301770f6ef64b42aa6bb6cb291df20aa39542c3ef94008615704007f3
+CC_PACKAGE_ID=fabcar_1:69de748301770f6ef64b42aa6bb6cb291df20aa39542c3ef94008615704007f3
 ```
 
 Because the environment variables have been set to operate the `peer` CLI as the Org2 admin, we can approve the chaincode definition of Fabcar as Org2. Chaincode is approved at the organization level, so the command only needs to target one peer. The approval is distributed to the other peers within the organization using gossip. Approve the chaincode definition using the [peer lifecycle chaincode approveformyorg](commands/peerlifecycle.html#peer-lifecycle-chaincode-approveformyorg) command:
@@ -364,10 +364,10 @@ You need to approve a chaincode definition with an identity that has an admin ro
 
 We still need to approve the chaincode definition as Org1. Set the following environment variables to operate as the Org1 admin:
 ```
-CORE_PEER_LOCALMSPID="Org1MSP"
-CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
-CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
-CORE_PEER_ADDRESS=localhost:7051
+export CORE_PEER_LOCALMSPID="Org1MSP"
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+export CORE_PEER_ADDRESS=localhost:7051
 ```
 
 You can now approve the chaincode definition as Org1.
@@ -463,7 +463,7 @@ cd ../../../test-network
 ```
 You can then issue the following commands to package the JavaScript chaincode from the `test-network` directory. We will set the environment variables needed to use the `peer` CLI again in case you closed your terminal.
 ```
-export PATH=${PWD}/../bin:$PATH
+export PATH=${PWD}/../bin:${PWD}:$PATH
 export FABRIC_CFG_PATH=$PWD/../config/
 export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
 peer lifecycle chaincode package fabcar_2.tar.gz --path ../chaincode/fabcar/javascript/ --lang node --label fabcar_2
@@ -494,7 +494,7 @@ Package ID: fabcar_2:1d559f9fb3dd879601ee17047658c7e0c84eab732dca7c841102f20e42a
 
 You can use the package label to find the package ID of the new chaincode and save it as a new environment variable.
 ```
-export NEW_CC_PACKAGE_ID=fabcar_2:1d559f9fb3dd879601ee17047658c7e0c84eab732dca7c841102f20e42a9e7d4
+NEW_CC_PACKAGE_ID=fabcar_2:1d559f9fb3dd879601ee17047658c7e0c84eab732dca7c841102f20e42a9e7d4
 ```
 
 Org1 can now approve a new chaincode definition:

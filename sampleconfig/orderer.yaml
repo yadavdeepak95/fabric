@@ -20,7 +20,7 @@ General:
 
     # TLS: TLS settings for the GRPC server.
     TLS:
-        Enabled: false
+        Enabled: true
         # PrivateKey governs the file location of the private key of the TLS certificate.
         PrivateKey: tls/server.key
         # Certificate governs the file location of the server TLS certificate.
@@ -339,6 +339,25 @@ Metrics:
 
       # The prefix is prepended to all emitted statsd metrics
       Prefix:
+
+
+################################################################################
+#
+#   Channel participation API Configuration
+#
+#   - This provides the channel participation API configuration for the orderer.
+#   - Channel participation uses the same ListenAddress and TLS settings of the
+#     Operations service.
+#
+################################################################################
+ChannelParticipation:
+    # Channel participation API is enabled.
+    Enabled: false
+
+    # Permanently remove storage resources when a channel is removed.
+    # Defines the default behavior of channel removal.
+    RemoveStorage: false
+
 
 ################################################################################
 #

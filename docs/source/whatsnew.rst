@@ -197,7 +197,7 @@ Upgrading to Fabric v2.x
 ------------------------
 
 A major new release brings some additional upgrade considerations. Rest assured
-though, that rolling upgrades from v1.4.x to v2.x are supported, so that network
+though, that rolling upgrades from v1.4.x to v2.0 are supported, so that network
 components can be upgraded one at a time with no downtime.
 
 The upgrade docs have been significantly expanded and reworked, and now have a

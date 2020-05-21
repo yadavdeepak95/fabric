@@ -26,7 +26,9 @@ open source architecture; Hyperledger Fabric is your starting point.
 
 Fabric releases and release notes can be found on the [GitHub releases page](https://github.com/hyperledger/fabric/releases).
 
-Please visit the [Hyperledger Fabric Jira dashboard](https://jira.hyperledger.org/secure/Dashboard.jspa?selectPageId=10104) for our release roadmap. We plan on a quarterly release cadence, delivering on a scoped set of themes and select features. Unless specified otherwise, all releases will be upgradable from the prior minor release.
+Please visit the [Hyperledger Fabric Jira dashboard](https://jira.hyperledger.org/secure/Dashboard.jspa?selectPageId=10104) for our release roadmap.
+We plan on a quarterly release cadence, delivering on a scoped set of themes and select features.
+Unless specified otherwise, all releases will be upgradable from the prior minor release.
 
 ## Documentation, Getting Started and Developer Guides
 
