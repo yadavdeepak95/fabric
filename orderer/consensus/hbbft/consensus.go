@@ -12,10 +12,11 @@ import (
 
 	"github.com/hyperledger/fabric/common/flogging"
 	"github.com/hyperledger/fabric/orderer/consensus"
+	"github.com/hyperledger/fabric/orderer/consensus/hbbft/honeybadgerbft"
 	cb "github.com/hyperledger/fabric/protos/common"
 )
 
-var logger = flogging.MustGetLogger("orderer.consensus.solo")
+var logger = flogging.MustGetLogger("orderer.consensus.hbbft")
 
 type consenter struct{}
 
@@ -37,6 +38,8 @@ type message struct {
 // into blocks before writing to the given ledger
 func New() consensus.Consenter {
 	logger.Info("HBBFT-RUNNING")
+	tmp := honeybadgerbft.NewWrapper(4, 1, 4)
+	tmp.Start()
 	return &consenter{}
 }
 
