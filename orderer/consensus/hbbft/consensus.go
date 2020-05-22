@@ -1,181 +1,116 @@
 /*
-Copyright IBM Corp. All Rights Reserved.
+Copyright IBM Corp. 2017 All Rights Reserved.
 
 SPDX-License-Identifier: Apache-2.0
 */
 
-package hbbft
+package consensus
 
 import (
-	"fmt"
-	"time"
-
-	"github.com/hyperledger/fabric/common/flogging"
-	"github.com/hyperledger/fabric/orderer/consensus"
-	"github.com/hyperledger/fabric/orderer/consensus/hbbft/honeybadgerbft"
+	"github.com/hyperledger/fabric/common/channelconfig"
+	"github.com/hyperledger/fabric/common/crypto"
+	"github.com/hyperledger/fabric/orderer/common/blockcutter"
+	"github.com/hyperledger/fabric/orderer/common/msgprocessor"
 	cb "github.com/hyperledger/fabric/protos/common"
 )
 
-var logger = flogging.MustGetLogger("orderer.consensus.hbbft")
-
-type consenter struct{}
-
-type chain struct {
-	support  consensus.ConsenterSupport
-	sendChan chan *message
-	exitChan chan struct{}
+// Consenter defines the backing ordering mechanism.
+type Consenter interface {
+	// HandleChain should create and return a reference to a Chain for the given set of resources.
+	// It will only be invoked for a given chain once per process.  In general, errors will be treated
+	// as irrecoverable and cause system shutdown.  See the description of Chain for more details
+	// The second argument to HandleChain is a pointer to the metadata stored on the `ORDERER` slot of
+	// the last block committed to the ledger of this Chain. For a new chain, or one which is migrated,
+	// this metadata will be nil (or contain a zero-length Value), as there is no prior metadata to report.
+	HandleChain(support ConsenterSupport, metadata *cb.Metadata) (Chain, error)
 }
 
-type message struct {
-	configSeq uint64
-	normalMsg *cb.Envelope
-	configMsg *cb.Envelope
+// Chain defines a way to inject messages for ordering.
+// Note, that in order to allow flexibility in the implementation, it is the responsibility of the implementer
+// to take the ordered messages, send them through the blockcutter.Receiver supplied via HandleChain to cut blocks,
+// and ultimately write the ledger also supplied via HandleChain.  This design allows for two primary flows
+// 1. Messages are ordered into a stream, the stream is cut into blocks, the blocks are committed (solo, kafka)
+// 2. Messages are cut into blocks, the blocks are ordered, then the blocks are committed (sbft)
+type Chain interface {
+	// Order accepts a message which has been processed at a given configSeq.
+	// If the configSeq advances, it is the responsibility of the consenter
+	// to revalidate and potentially discard the message
+	// The consenter may return an error, indicating the message was not accepted
+	Order(env *cb.Envelope, configSeq uint64) error
+
+	// Configure accepts a message which reconfigures the channel and will
+	// trigger an update to the configSeq if committed.  The configuration must have
+	// been triggered by a ConfigUpdate message. If the config sequence advances,
+	// it is the responsibility of the consenter to recompute the resulting config,
+	// discarding the message if the reconfiguration is no longer valid.
+	// The consenter may return an error, indicating the message was not accepted
+	Configure(config *cb.Envelope, configSeq uint64) error
+
+	// WaitReady blocks waiting for consenter to be ready for accepting new messages.
+	// This is useful when consenter needs to temporarily block ingress messages so
+	// that in-flight messages can be consumed. It could return error if consenter is
+	// in erroneous states. If this blocking behavior is not desired, consenter could
+	// simply return nil.
+	WaitReady() error
+
+	// Errored returns a channel which will close when an error has occurred.
+	// This is especially useful for the Deliver client, who must terminate waiting
+	// clients when the consenter is not up to date.
+	Errored() <-chan struct{}
+
+	// Start should allocate whatever resources are needed for staying up to date with the chain.
+	// Typically, this involves creating a thread which reads from the ordering source, passes those
+	// messages to a block cutter, and writes the resulting blocks to the ledger.
+	Start()
+
+	// Halt frees the resources which were allocated for this Chain.
+	Halt()
 }
 
-// New creates a new consenter for the solo consensus scheme.
-// The solo consensus scheme is very simple, and allows only one consenter for a given chain (this process).
-// It accepts messages being delivered via Order/Configure, orders them, and then uses the blockcutter to form the messages
-// into blocks before writing to the given ledger
-func New() consensus.Consenter {
-	logger.Info("HBBFT-RUNNING")
-	tmp := honeybadgerbft.NewWrapper(4, 1, 4)
-	tmp.Start()
-	return &consenter{}
-}
+//go:generate counterfeiter -o mocks/mock_consenter_support.go . ConsenterSupport
 
-func (solo *consenter) HandleChain(support consensus.ConsenterSupport, metadata *cb.Metadata) (consensus.Chain, error) {
-	return newChain(support), nil
-}
+// ConsenterSupport provides the resources available to a Consenter implementation.
+type ConsenterSupport interface {
+	crypto.LocalSigner
+	msgprocessor.Processor
 
-func newChain(support consensus.ConsenterSupport) *chain {
-	return &chain{
-		support:  support,
-		sendChan: make(chan *message),
-		exitChan: make(chan struct{}),
-	}
-}
+	// VerifyBlockSignature verifies a signature of a block with a given optional
+	// configuration (can be nil).
+	VerifyBlockSignature([]*cb.SignedData, *cb.ConfigEnvelope) error
 
-func (ch *chain) Start() {
-	go ch.main()
-}
+	// BlockCutter returns the block cutting helper for this channel.
+	BlockCutter() blockcutter.Receiver
 
-func (ch *chain) Halt() {
-	select {
-	case <-ch.exitChan:
-		// Allow multiple halts without panic
-	default:
-		close(ch.exitChan)
-	}
-}
+	// SharedConfig provides the shared config from the channel's current config block.
+	SharedConfig() channelconfig.Orderer
 
-func (ch *chain) WaitReady() error {
-	return nil
-}
+	// ChannelConfig provides the channel config from the channel's current config block.
+	ChannelConfig() channelconfig.Channel
 
-// Order accepts normal messages for ordering
-func (ch *chain) Order(env *cb.Envelope, configSeq uint64) error {
-	select {
-	case ch.sendChan <- &message{
-		configSeq: configSeq,
-		normalMsg: env,
-	}:
-		return nil
-	case <-ch.exitChan:
-		return fmt.Errorf("Exiting")
-	}
-}
+	// CreateNextBlock takes a list of messages and creates the next block based on the block with highest block number committed to the ledger
+	// Note that either WriteBlock or WriteConfigBlock must be called before invoking this method a second time.
+	CreateNextBlock(messages []*cb.Envelope) *cb.Block
 
-// Configure accepts configuration update messages for ordering
-func (ch *chain) Configure(config *cb.Envelope, configSeq uint64) error {
-	select {
-	case ch.sendChan <- &message{
-		configSeq: configSeq,
-		configMsg: config,
-	}:
-		return nil
-	case <-ch.exitChan:
-		return fmt.Errorf("Exiting")
-	}
-}
+	// Block returns a block with the given number,
+	// or nil if such a block doesn't exist.
+	Block(number uint64) *cb.Block
 
-// Errored only closes on exit
-func (ch *chain) Errored() <-chan struct{} {
-	return ch.exitChan
-}
+	// WriteBlock commits a block to the ledger.
+	WriteBlock(block *cb.Block, encodedMetadataValue []byte)
 
-func (ch *chain) main() {
-	var timer <-chan time.Time
-	var err error
+	// WriteConfigBlock commits a block to the ledger, and applies the config update inside.
+	WriteConfigBlock(block *cb.Block, encodedMetadataValue []byte)
 
-	for {
-		seq := ch.support.Sequence()
-		err = nil
-		select {
-		case msg := <-ch.sendChan:
-			if msg.configMsg == nil {
-				// NormalMsg
-				if msg.configSeq < seq {
-					_, err = ch.support.ProcessNormalMsg(msg.normalMsg)
-					if err != nil {
-						logger.Warningf("Discarding bad normal message: %s", err)
-						continue
-					}
-				}
-				batches, pending := ch.support.BlockCutter().Ordered(msg.normalMsg)
+	// Sequence returns the current config squence.
+	Sequence() uint64
 
-				for _, batch := range batches {
-					block := ch.support.CreateNextBlock(batch)
-					ch.support.WriteBlock(block, nil)
-				}
+	// ChainID returns the channel ID this support is associated with.
+	ChainID() string
 
-				switch {
-				case timer != nil && !pending:
-					// Timer is already running but there are no messages pending, stop the timer
-					timer = nil
-				case timer == nil && pending:
-					// Timer is not already running and there are messages pending, so start it
-					timer = time.After(ch.support.SharedConfig().BatchTimeout())
-					logger.Debugf("Just began %s batch timer", ch.support.SharedConfig().BatchTimeout().String())
-				default:
-					// Do nothing when:
-					// 1. Timer is already running and there are messages pending
-					// 2. Timer is not set and there are no messages pending
-				}
+	// Height returns the number of blocks in the chain this channel is associated with.
+	Height() uint64
 
-			} else {
-				// ConfigMsg
-				if msg.configSeq < seq {
-					msg.configMsg, _, err = ch.support.ProcessConfigMsg(msg.configMsg)
-					if err != nil {
-						logger.Warningf("Discarding bad config message: %s", err)
-						continue
-					}
-				}
-				batch := ch.support.BlockCutter().Cut()
-				if batch != nil {
-					block := ch.support.CreateNextBlock(batch)
-					ch.support.WriteBlock(block, nil)
-				}
-
-				block := ch.support.CreateNextBlock([]*cb.Envelope{msg.configMsg})
-				ch.support.WriteConfigBlock(block, nil)
-				timer = nil
-			}
-		case <-timer:
-			//clear the timer
-			timer = nil
-
-			batch := ch.support.BlockCutter().Cut()
-			if len(batch) == 0 {
-				logger.Warningf("Batch timer expired with no pending requests, this might indicate a bug")
-				continue
-			}
-			logger.Debugf("Batch timer expired, creating block")
-			block := ch.support.CreateNextBlock(batch)
-			ch.support.WriteBlock(block, nil)
-		case <-ch.exitChan:
-			logger.Debugf("Exiting")
-			return
-		}
-	}
+	// Append appends a new block to the ledger in its raw form,
+	// unlike WriteBlock that also mutates its metadata.
+	Append(block *cb.Block) error
 }

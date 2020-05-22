@@ -1,0 +1,12 @@
+o proper logging
+o error handling in honeybadger
+o timmer kya karna h --- major question
+o complete everthing by day end
+
+- timer wrapper fixed assuming
+- I guess wrapper is completed revise in morning
+
++ consenter -- CreateConsentersMap is missing
++ chain -- add timer
++ chain -- add logger
++ chain -- where to verify txns
