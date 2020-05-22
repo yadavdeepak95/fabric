@@ -668,12 +668,17 @@ func initializeMultichannelRegistrar(
 
 	var icr etcdraft.InactiveChainRegistry
 	if isClusterType(bootstrapBlock) {
-		etcdConsenter := initializeEtcdraftConsenter(consenters, conf, lf, clusterDialer, bootstrapBlock, ri, srvConf, srv, registrar, metricsProvider)
-		icr = etcdConsenter.InactiveChainRegistry
+		if consensusType(bootstrapBlock) == "hbbft" {
+			hbbftConsenter := initializeHbbftConsenter(consenters, conf, lf, clusterDialer, bootstrapBlock, ri, srvConf, srv, registrar, metricsProvider)
+			icr = hbbftConsenter.InactiveChainRegistry
+		} else {
+			etcdConsenter := initializeEtcdraftConsenter(consenters, conf, lf, clusterDialer, bootstrapBlock, ri, srvConf, srv, registrar, metricsProvider)
+			icr = etcdConsenter.InactiveChainRegistry
+		}
 	}
 
 	consenters["solo"] = solo.New()
-	consenters["hbbft"] = hbbft.New()
+	// consenters["hbbft"] = hbbft.New()
 
 	var kafkaMetrics *kafka.Metrics
 	consenters["kafka"], kafkaMetrics = kafka.New(conf.Kafka, metricsProvider, healthChecker, icr, registrar.CreateChain)
@@ -683,6 +688,59 @@ func initializeMultichannelRegistrar(
 
 	registrar.Initialize(consenters)
 	return registrar
+}
+func initializeHbbftConsenter(
+	consenters map[string]consensus.Consenter,
+	conf *localconfig.TopLevel,
+	lf blockledger.Factory,
+	clusterDialer *cluster.PredicateDialer,
+	bootstrapBlock *cb.Block,
+	ri *replicationInitiator,
+	srvConf comm.ServerConfig,
+	srv *comm.GRPCServer,
+	registrar *multichannel.Registrar,
+	metricsProvider metrics.Provider,
+) *hbbft.Consenter {
+	replicationRefreshInterval := conf.General.Cluster.ReplicationBackgroundRefreshInterval
+	if replicationRefreshInterval == 0 {
+		replicationRefreshInterval = defaultReplicationBackgroundRefreshInterval
+	}
+
+	systemChannelName, err := utils.GetChainIDFromBlock(bootstrapBlock)
+	if err != nil {
+		ri.logger.Panicf("Failed extracting system channel name from bootstrap block: %v", err)
+	}
+	systemLedger, err := lf.GetOrCreate(systemChannelName)
+	if err != nil {
+		ri.logger.Panicf("Failed obtaining system channel (%s) ledger: %v", systemChannelName, err)
+	}
+	getConfigBlock := func() *cb.Block {
+		return multichannel.ConfigBlock(systemLedger)
+	}
+
+	exponentialSleep := exponentialDurationSeries(replicationBackgroundInitialRefreshInterval, replicationRefreshInterval)
+	ticker := newTicker(exponentialSleep)
+
+	icr := &inactiveChainReplicator{
+		logger:                            logger,
+		scheduleChan:                      ticker.C,
+		quitChan:                          make(chan struct{}),
+		replicator:                        ri,
+		chains2CreationCallbacks:          make(map[string]chainCreation),
+		retrieveLastSysChannelConfigBlock: getConfigBlock,
+		registerChain:                     ri.registerChain,
+	}
+
+	// Use the inactiveChainReplicator as a channel lister, since it has knowledge
+	// of all inactive chains.
+	// This is to prevent us pulling the entire system chain when attempting to enumerate
+	// the channels in the system.
+	ri.channelLister = icr
+
+	go icr.run()
+	hbbftConsenter := hbbft.New(clusterDialer, conf, srvConf, srv, registrar, icr, metricsProvider)
+	consenters["hbbft"] = hbbftConsenter
+	return hbbftConsenter
 }
 
 func initializeEtcdraftConsenter(
