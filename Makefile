@@ -112,7 +112,7 @@ include docker-env.mk
 
 all: native docker checks
 
-checks: basic-checks unit-test integration-test
+checks: basic-checks #unit-test integration-test
 
 basic-checks: license spelling trailing-spaces linter check-metrics-doc
 

@@ -58,6 +58,10 @@ const (
 	// the etcd/raft-based ordering service.
 	SampleDevModeEtcdRaftProfile = "SampleDevModeEtcdRaft"
 
+	// SampleDevModeHbbftProfile references the sample profile used for testing
+	// the hbbft-based ordering service.
+	SampleDevModeHbbftProfile = "SampleDevModeHbbft"
+
 	// SampleSingleMSPChannelProfile references the sample profile which
 	// includes only the sample MSP and is used to create a channel
 	SampleSingleMSPChannelProfile = "SampleSingleMSPChannel"
@@ -429,6 +433,74 @@ loop:
 
 			default:
 				break second_loop
+			}
+		}
+
+		if _, err := time.ParseDuration(ord.EtcdRaft.Options.TickInterval); err != nil {
+			logger.Panicf("Etcdraft TickInterval (%s) must be in time duration format", ord.EtcdRaft.Options.TickInterval)
+		}
+
+		// validate the specified members for Options
+		if ord.EtcdRaft.Options.ElectionTick <= ord.EtcdRaft.Options.HeartbeatTick {
+			logger.Panicf("election tick must be greater than heartbeat tick")
+		}
+
+		for _, c := range ord.EtcdRaft.GetConsenters() {
+			if c.Host == "" {
+				logger.Panicf("consenter info in %s configuration did not specify host", etcdraft.TypeKey)
+			}
+			if c.Port == 0 {
+				logger.Panicf("consenter info in %s configuration did not specify port", etcdraft.TypeKey)
+			}
+			if c.ClientTlsCert == nil {
+				logger.Panicf("consenter info in %s configuration did not specify client TLS cert", etcdraft.TypeKey)
+			}
+			if c.ServerTlsCert == nil {
+				logger.Panicf("consenter info in %s configuration did not specify server TLS cert", etcdraft.TypeKey)
+			}
+			clientCertPath := string(c.GetClientTlsCert())
+			cf.TranslatePathInPlace(configDir, &clientCertPath)
+			c.ClientTlsCert = []byte(clientCertPath)
+			serverCertPath := string(c.GetServerTlsCert())
+			cf.TranslatePathInPlace(configDir, &serverCertPath)
+			c.ServerTlsCert = []byte(serverCertPath)
+		}
+	case "hbbft":
+		if ord.EtcdRaft == nil {
+			logger.Panicf("%s hbbft configuration missing", etcdraft.TypeKey)
+		}
+		if ord.EtcdRaft.Options == nil {
+			logger.Infof("Orderer.EtcdRaft.Options unset, setting to %v", genesisDefaults.Orderer.EtcdRaft.Options)
+			ord.EtcdRaft.Options = genesisDefaults.Orderer.EtcdRaft.Options
+		}
+	hbbft_second_loop:
+		for {
+			switch {
+			case ord.EtcdRaft.Options.TickInterval == "":
+				logger.Infof("Orderer.EtcdRaft.Options.TickInterval unset, setting to %v", genesisDefaults.Orderer.EtcdRaft.Options.TickInterval)
+				ord.EtcdRaft.Options.TickInterval = genesisDefaults.Orderer.EtcdRaft.Options.TickInterval
+
+			case ord.EtcdRaft.Options.ElectionTick == 0:
+				logger.Infof("Orderer.EtcdRaft.Options.BatchSize( Election Tick for RAFT) unset, setting to %v", genesisDefaults.Orderer.EtcdRaft.Options.ElectionTick)
+				ord.EtcdRaft.Options.ElectionTick = genesisDefaults.Orderer.EtcdRaft.Options.ElectionTick
+
+			case ord.EtcdRaft.Options.HeartbeatTick == 0:
+				logger.Infof("Orderer.EtcdRaft.Options.HeartbeatTick unset, setting to %v", genesisDefaults.Orderer.EtcdRaft.Options.HeartbeatTick)
+				ord.EtcdRaft.Options.HeartbeatTick = genesisDefaults.Orderer.EtcdRaft.Options.HeartbeatTick
+
+			case ord.EtcdRaft.Options.MaxInflightBlocks == 0:
+				logger.Infof("Orderer.EtcdRaft.Options.MaxInflightBlocks unset, setting to %v", genesisDefaults.Orderer.EtcdRaft.Options.MaxInflightBlocks)
+				ord.EtcdRaft.Options.MaxInflightBlocks = genesisDefaults.Orderer.EtcdRaft.Options.MaxInflightBlocks
+
+			case ord.EtcdRaft.Options.SnapshotIntervalSize == 0:
+				logger.Infof("Orderer.EtcdRaft.Options.SnapshotIntervalSize unset, setting to %v", genesisDefaults.Orderer.EtcdRaft.Options.SnapshotIntervalSize)
+				ord.EtcdRaft.Options.SnapshotIntervalSize = genesisDefaults.Orderer.EtcdRaft.Options.SnapshotIntervalSize
+
+			case len(ord.EtcdRaft.Consenters) == 0:
+				logger.Panicf("%s configuration did not specify any consenter", etcdraft.TypeKey)
+
+			default:
+				break hbbft_second_loop
 			}
 		}
 
