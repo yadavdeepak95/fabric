@@ -41,6 +41,9 @@ const (
 	// ConsensusTypeKafka identifies the Kafka-based consensus implementation.
 	ConsensusTypeKafka = "kafka"
 
+	// ConsensusTypeHbbft identifies the Hbbft-based consensus implementation.
+	ConsensusTypeHbbft = "hbbft"
+
 	// BlockValidationPolicyKey TODO
 	BlockValidationPolicyKey = "BlockValidation"
 
@@ -223,6 +226,10 @@ func NewOrdererGroup(conf *genesisconfig.Orderer) (*cb.ConfigGroup, error) {
 	case etcdraft.TypeKey:
 		if consensusMetadata, err = etcdraft.Marshal(conf.EtcdRaft); err != nil {
 			return nil, errors.Errorf("cannot marshal metadata for orderer type %s: %s", etcdraft.TypeKey, err)
+		}
+	case ConsensusTypeHbbft:
+		if consensusMetadata, err = etcdraft.Marshal(conf.EtcdRaft); err != nil {
+			return nil, errors.Errorf("add conf as for raft only Election Tick and Consenters matters  cannot marshal metadata for orderer type %s: %s", ConsensusTypeHbbft, err)
 		}
 	default:
 		return nil, errors.Errorf("unknown orderer type: %s", conf.OrdererType)

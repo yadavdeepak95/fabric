@@ -56,6 +56,7 @@ var _ = Describe("Integration", func() {
 		genesisconfig.SampleInsecureKafkaProfile,
 		genesisconfig.SampleSingleMSPKafkaProfile,
 		genesisconfig.SampleDevModeKafkaProfile,
+		// genesisconfig.SampleDevModeEtcdRaftProfile,
 	} {
 		It(fmt.Sprintf("successfully parses the %s profile", profile), func() {
 			config := configtxgentest.Load(profile)
