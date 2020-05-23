@@ -551,8 +551,13 @@ func (c *Chain) ordered(msg *orderer.SubmitRequest) (batches [][]*common.Envelop
 			return nil, true, errors.Errorf("bad normal message: %s", err)
 		}
 	}
-	batches, pending = c.support.BlockCutter().Ordered(msg.Payload)
-	return batches, pending, nil
+	batch := c.support.BlockCutter().Cut()
+	batches = [][]*common.Envelope{}
+	if len(batch) != 0 {
+		batches = append(batches, batch)
+	}
+	batches = append(batches, []*common.Envelope{msg.Payload})
+	return batches, false, nil
 
 }
 
