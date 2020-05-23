@@ -6,17 +6,18 @@ import (
 	"sync"
 	"time"
 
-	"github.com/hyperledger/fabric/common/flogging"
-	ab "github.com/hyperledger/fabric/orderer/consensus/hbbft/honeybadgerbft/proto/orderer"
 	cb "github.com/hyperledger/fabric/protos/common"
-	// 	"github.com/op/go-logging"
+
+	ab "github.com/hyperledger/fabric/orderer/consensus/hbbft/honeybadgerbft/proto/orderer"
+
+	"github.com/op/go-logging"
 )
 
 const pkgLogID = "orderer/HoneybadgerBFT"
 
-var logger *flogging.FabricLogger
+var logger = logging.MustGetLogger(pkgLogID)
 
-// MessageChannels to send and recive from network or rpc
+// MessageChannels to send and recive from network
 type MessageChannels struct {
 	Send    chan ab.HoneyBadgerBFTMessage
 	Receive chan *ab.HoneyBadgerBFTMessage
@@ -25,24 +26,21 @@ type MessageChannels struct {
 
 // ChainImpl struct
 type ChainImpl struct {
-	Total         int // total partcipating nodes
+	Total         int
 	Tolerance     int
 	Index         int
-	height        uint64 // internal use
-	BatchSize     uint64
-	channelName   string
+	height        uint64
+	batchSize     uint64
 	txbuffer      []*cb.Envelope
 	heightChan    map[uint64](chan *ab.HoneyBadgerBFTMessage)
 	newBlockChan  chan interface{}
 	bufferLock    sync.Mutex
+	replayChan    chan interface{}
 	heightMapLock sync.Mutex
 	heightLock    sync.Mutex
-	MsgChan       *MessageChannels
-	tempCount     uint64
-	BatchTimeOut  time.Duration
-	timer         <-chan time.Time
-	logger        *flogging.FabricLogger
-	exitChan      chan interface{}
+	// blockOut      chan interface{}
+	MsgChan   *MessageChannels
+	tempCount uint64
 }
 
 //used to maintain to call for next proposal
@@ -50,13 +48,12 @@ type ChainImpl struct {
 
 //Enqueue txn input and trigger for new block
 func (ch *ChainImpl) Enqueue(env *cb.Envelope, isConfig bool) {
-
 	ch.bufferLock.Lock()
 	ch.tempCount++
 	ch.txbuffer = append(ch.txbuffer, env)
-	fmt.Printf("\nGOT txn[%v]batchsize[%v] tempcount[%v]\n\n", ch.Index, ch.BatchSize, ch.tempCount)
-	ch.timer = time.After(ch.BatchTimeOut)
-	if (ch.tempCount >= ch.BatchSize) || isConfig {
+	fmt.Printf("\nGOT txn[%v]batchsize[%v] tempcount[%v]\n\n", ch.Index, ch.batchSize, ch.tempCount)
+
+	if (ch.tempCount >= ch.batchSize) || isConfig {
 		fmt.Printf("\n Triggering BLOCK CHAIN [%v] cout[%v] config[%v]", ch.Index, ch.tempCount, isConfig)
 		ch.tempCount = 0
 		ch.newBlockChan <- nil
@@ -66,9 +63,11 @@ func (ch *ChainImpl) Enqueue(env *cb.Envelope, isConfig bool) {
 }
 
 //NewWrapper create new insatance of chain
-func NewWrapper(batchSize int, Index int, total int, BatchTimeOut time.Duration, channnelName string) *ChainImpl {
-
-	// logging.SetLevel(4, pkgLogID)
+func NewWrapper(batchSize int, Index int, total int) *ChainImpl {
+	//Net Package opening port and returns channels
+	//TODO : add chain id here
+	//  if req
+	logging.SetLevel(4, pkgLogID)
 	// logger.Infof("inFO LEVEL SET")
 	// messageChannels, err := Register("1", ConnectionList, Index)
 
@@ -79,44 +78,40 @@ func NewWrapper(batchSize int, Index int, total int, BatchTimeOut time.Duration,
 	}
 
 	ch := &ChainImpl{
-		channelName:  channnelName,
-		BatchSize:    uint64(1), //,uint64(batchSize),
-		BatchTimeOut: BatchTimeOut / 2,
+		batchSize:    uint64(1), //,uint64(batchSize),
 		Total:        total,
 		Tolerance:    ((total - 1) / 3),
 		Index:        Index,
 		MsgChan:      channels,
 		height:       0,
 		newBlockChan: make(chan interface{}, 666666),
-		heightChan:   make(map[uint64]chan *ab.HoneyBadgerBFTMessage),
-		tempCount:    0,
+		// blockOut:     make(chan interface{}),
+		replayChan: make(chan interface{}, 666666),
+		heightChan: make(map[uint64]chan *ab.HoneyBadgerBFTMessage),
+		tempCount:  0,
 	}
-	logger = ch.logger
 
-	ch.logger.Infof("honeybadger Initiated channel[%v]", ch.channelName)
+	fmt.Printf("WRAPPER FIRED UP***********************8")
 	return ch
 
 }
 
 //Start fires to go routines
 func (ch *ChainImpl) Start() {
-	// main functions
+	//Send msg to channel according to height
+	// go ch.run()
+	//main function does all main stuff propose/consensus and all
 	go ch.Consensus()
-	// mapping incomming messages to proper channel
+	// mapping message to proper channel
 	dispatchMessageByHeightService := func() {
 		for {
-			select {
-			case msg := <-ch.MsgChan.Receive:
-				ch.heightLock.Lock()
-				if msg.GetHeight() >= ch.height {
-					ch.getByHeight(msg.GetHeight()) <- msg
-				}
-				ch.heightLock.Unlock()
-
-			case <-ch.exitChan:
-				ch.logger.Info("Exiting honeybadger dispatchMessageByHeightService loop")
-				return
+			msg := <-ch.MsgChan.Receive
+			// fmt.Printf("RECVED MSGS**********************\n\n%v\n\n", msg)
+			ch.heightLock.Lock()
+			if msg.GetHeight() >= ch.height {
+				ch.getByHeight(msg.GetHeight()) <- msg
 			}
+			ch.heightLock.Unlock()
 		}
 	}
 	go dispatchMessageByHeightService()
@@ -129,7 +124,7 @@ func (ch *ChainImpl) getByHeight(height uint64) chan *ab.HoneyBadgerBFTMessage {
 	result, exist := ch.heightChan[height]
 	if !exist {
 		//TODO: calculate height according to number of nodes
-		result = make(chan *ab.HoneyBadgerBFTMessage, 66666)
+		result = make(chan *ab.HoneyBadgerBFTMessage, 6666)
 		ch.heightChan[height] = result
 	}
 
@@ -146,11 +141,11 @@ func (ch *ChainImpl) getByHeight(height uint64) chan *ab.HoneyBadgerBFTMessage {
 // 	}
 
 // }
-// delete duplicate txn in one batch
-func unique(txnSlice []*cb.Envelope) []*cb.Envelope {
+
+func unique(intSlice []*cb.Envelope) []*cb.Envelope {
 	keys := make(map[string]bool)
 	list := []*cb.Envelope{}
-	for _, entry := range txnSlice {
+	for _, entry := range intSlice {
 		if _, value := keys[entry.String()]; !value {
 			keys[entry.String()] = true
 			list = append(list, entry)
@@ -167,6 +162,7 @@ func (ch *ChainImpl) Consensus() {
 			msg.Height = ch.height
 			msg.Receiver = uint64(index)
 			msg.Sender = uint64(ch.Index)
+			// fmt.Printf("SENDING MSGS**********************\n\n%+v\n\n", msg)
 			ch.MsgChan.Send <- msg
 		}
 		broadcastFunc := func(msg ab.HoneyBadgerBFTMessage) {
@@ -174,24 +170,14 @@ func (ch *ChainImpl) Consensus() {
 				sendFunc(i, msg)
 			}
 		}
-
 		select {
-		case <-ch.exitChan:
-			ch.logger.Info("Exiting honeybadger main loop channel[%v]", ch.channelName)
-			return
+		// case <-ch.exitChan:
+		// 	logger.Debug("Exiting")
+		// 	return
 		case <-ch.newBlockChan:
-			// handle extra triggers
-			ch.timer = nil
-			ch.bufferLock.Lock()
-			if len(ch.txbuffer) <= 0 {
-				ch.timer = nil
-				ch.bufferLock.Unlock()
-				continue
-			}
-			ch.bufferLock.Unlock()
 			var exitHeight = make(chan interface{})
 			ch.heightLock.Lock()
-			ch.logger.Infof("Node[%v], Channel[%v], Height[%v]", ch.height, ch.channelName, ch.Index)
+			logger.Infof("\n\n***************%v[%v]*****************\n\n", ch.height, ch.Index)
 			ch.heightLock.Unlock()
 			startTime := time.Now()
 			var abaRecvMsgChannel = make(chan *ab.HoneyBadgerBFTMessage)
@@ -212,7 +198,7 @@ func (ch *ChainImpl) Consensus() {
 						} else if msg.GetReliableBroadcast() != nil {
 							rbcRecvMsgChannel <- msg
 						} else {
-							ch.logger.Warning("Invalid Msg")
+							logger.Debugf("MSG in Serive")
 						}
 
 					}
@@ -255,7 +241,7 @@ func (ch *ChainImpl) Consensus() {
 				componentSendFunc := func(index int, msg ab.HoneyBadgerBFTMessage) {
 
 					msg.Instance = uint64(instanceIndex)
-					ch.logger.Debugf("msg.Instance[%v],orderer[%v]", msg.Instance, ch.Index, instanceIndex)
+					logger.Debugf("msg.Instance[%v],orderer[%v]", msg.Instance, ch.Index, instanceIndex)
 					sendFunc(index, msg)
 				}
 				componentBroadcastFunc := func(msg ab.HoneyBadgerBFTMessage) {
@@ -275,8 +261,7 @@ func (ch *ChainImpl) Consensus() {
 			//setup HoneyBadgerBFT component (using ACS)
 			////////////////////////////////////////////////
 			block := NewHoneyBadgerBlock(ch.Total, ch.Tolerance, acs)
-
-			//TODO : Improve --- I guess is working but need to check properly
+			//TODO : Improve ??
 			randomSelectFunc := func(batch []*cb.Envelope, number int) (result []*cb.Envelope) {
 				result = batch[:]
 				if len(batch) <= number {
@@ -292,12 +277,13 @@ func (ch *ChainImpl) Consensus() {
 			ch.bufferLock.Lock()
 			proposalBatch := ch.txbuffer[:]
 			ch.bufferLock.Unlock()
-			if uint32(len(proposalBatch)) > uint32(ch.BatchSize) {
-				// ch.bufferLock.Lock()
-				proposalBatch = proposalBatch[:ch.BatchSize]
-				// ch.bufferLock.Unlock()
-				proposalBatch = randomSelectFunc(proposalBatch, int(ch.BatchSize))
+			if uint32(len(proposalBatch)) > uint32(ch.batchSize) {
+				ch.bufferLock.Lock()
+				proposalBatch = ch.txbuffer[:ch.batchSize]
+				ch.bufferLock.Unlock()
+
 			}
+			proposalBatch = randomSelectFunc(proposalBatch, int(ch.batchSize))
 
 			////////////////////////////////////////////
 			//generate blocks
@@ -308,9 +294,11 @@ func (ch *ChainImpl) Consensus() {
 			block.In <- proposalBatch
 			committedBatch = <-block.Out
 
+			// <-ch.blockOut
+
 			//TODO MAKE IT BETTER Clear buffer
 			if len(committedBatch) == 0 {
-				ch.logger.Warningf("No transaction committed!")
+				logger.Warningf("No transaction committed!")
 			} else {
 				//removing duplicate txns
 				lenbefore := len(committedBatch)
@@ -339,35 +327,29 @@ func (ch *ChainImpl) Consensus() {
 			}
 
 			ch.heightLock.Lock()
-			ch.logger.Infof("Block out at height[%v] txns[%v] timetaken[%v] buffer left[%v]", ch.height, len(committedBatch), time.Since(startTime), len(ch.txbuffer))
+			logger.Infof("%v, %v, %v", ch.height, len(committedBatch), time.Since(startTime))
+
+			logger.Infof("\n\n********************Bufferlen == %v**************\n\n", len(ch.txbuffer))
 			delete(ch.heightChan, ch.height)
 			ch.height++
 			ch.heightLock.Unlock()
-
-			//CLEANING
 			close(exitHeight)
+			//Remove from
+			//CLEANING
 			for i := 0; i < ch.Total; i++ {
 				close(rbc[i].exitRecv)
 				close(aba[i].exitRecv)
 			}
+			logger.Infof("ch.blockout[%v]", ch.Index)
 			if len(ch.newBlockChan) == 0 {
 
 				ch.bufferLock.Lock()
-				if uint64(len(ch.txbuffer)) >= ch.BatchSize {
-					ch.logger.Debugf("OUT PUSHING HEIGHT")
+				if uint64(len(ch.txbuffer)) >= ch.batchSize {
+					logger.Debugf("OUT PUSHING HEIGHT")
 					ch.newBlockChan <- nil
-				} else {
-					ch.timer = time.After(ch.BatchTimeOut)
 				}
 				ch.bufferLock.Unlock()
 			}
-		case <-ch.timer:
-			ch.bufferLock.Lock()
-			if len(ch.txbuffer) > 0 {
-				ch.newBlockChan <- nil
-				ch.timer = nil
-			}
-			ch.bufferLock.Unlock()
 		}
 
 	}

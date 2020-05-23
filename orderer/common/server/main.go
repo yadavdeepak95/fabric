@@ -67,7 +67,7 @@ var (
 	version   = app.Command("version", "Show version information")
 	benchmark = app.Command("benchmark", "Run orderer in benchmark mode")
 
-	clusterTypes = map[string]struct{}{"etcdraft": {}}
+	clusterTypes = map[string]struct{}{"etcdraft": {}, "hbbft": {}}
 )
 
 // Main is the entry point of orderer process

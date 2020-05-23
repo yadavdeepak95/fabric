@@ -10,3 +10,5 @@ o complete everthing by day end
 + chain -- add timer
 + chain -- add logger
 + chain -- where to verify txns
++ logger -- fix logger problem 
++ print consenter map also

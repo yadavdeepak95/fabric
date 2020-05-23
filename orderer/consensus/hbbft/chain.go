@@ -155,7 +155,7 @@ func NewChain(
 
 	//	c.ActiveNodes.Store([]uint64{})
 
-	c.Node = honeybadgerbft.NewWrapper(c.opts.BatchSize, int(c.nodeID), len(c.opts.Consenters), c.support.SharedConfig().BatchTimeout(), c.channelID)
+	c.Node = honeybadgerbft.NewWrapper(c.opts.BatchSize, int(c.nodeID), len(c.opts.Consenters))
 
 	return c, nil
 }
@@ -176,7 +176,7 @@ func (c *Chain) Start() {
 		c.logger.Infof("Consensus-type migration detected, starting new raft node on an existing channel; height=%d", c.support.Height())
 	}
 	c.bc = &blockCreator{
-		hash:   utils.MarshalOrPanic(c.lastBlock.Header),
+		hash:   c.lastBlock.Header.Hash(),
 		number: c.lastBlock.Header.Number,
 		logger: c.logger,
 	}
@@ -447,30 +447,30 @@ func (c *Chain) run() {
 				// polled by `WaitReady`
 				continue
 			}
-			var err error
+			// var err error
 			msg := s.req
-			seq := c.support.Sequence()
+			// seq := c.support.Sequence()
 			if c.isConfig(msg.Payload) {
 				// ConfigMsg
-				if msg.LastValidationSeq < seq {
-					c.logger.Warnf("Config message was validated against %d, although current config seq has advanced (%d)", msg.LastValidationSeq, seq)
-					msg.Payload, _, err = c.support.ProcessConfigMsg(msg.Payload)
-					if err != nil {
-						continue
-					}
-				}
+				// if msg.LastValidationSeq < seq {
+				// 	c.logger.Warnf("Config message was validated against %d, although current config seq has advanced (%d)", msg.LastValidationSeq, seq)
+				// 	msg.Payload, _, err = c.support.ProcessConfigMsg(msg.Payload)
+				// 	if err != nil {
+				// 		continue
+				// 	}
+				// }
 				c.logger.Info("Received config transaction, pause accepting transaction till it is committed")
 				c.Node.Enqueue(msg.Payload, true)
 				continue
 				// submitC = nil
 			}
 			// it is a normal message
-			if msg.LastValidationSeq < seq {
-				c.logger.Warnf("Normal message was validated against %d, although current config seq has advanced (%d)", msg.LastValidationSeq, seq)
-				if _, err := c.support.ProcessNormalMsg(msg.Payload); err != nil {
-					continue
-				}
-			}
+			// if msg.LastValidationSeq < seq {
+			// 	c.logger.Warnf("Normal message was validated against %d, although current config seq has advanced (%d)", msg.LastValidationSeq, seq)
+			// 	if _, err := c.support.ProcessNormalMsg(msg.Payload); err != nil {
+			// 		continue
+			// 	}
+			// }
 			c.Node.Enqueue(msg.Payload, false)
 
 		case <-c.doneC:
