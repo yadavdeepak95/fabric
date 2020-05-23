@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/golang/protobuf/proto"
+	"github.com/hyperledger/fabric/common/flogging"
 	ab "github.com/hyperledger/fabric/orderer/consensus/hbbft/honeybadgerbft/proto/orderer"
 	cb "github.com/hyperledger/fabric/protos/common"
 )
@@ -17,13 +18,13 @@ type HoneyBadgerBlock struct {
 	channel       chan *ab.HoneyBadgerBFTMessage
 	broadcastFunc func(msg *ab.HoneyBadgerBFTMessageThresholdEncryption)
 	acs           *CommonSubset
-
-	In  chan []*cb.Envelope
-	Out chan []*cb.Envelope
+	logger        *flogging.FabricLogger
+	In            chan []*cb.Envelope
+	Out           chan []*cb.Envelope
 }
 
 //NewHoneyBadgerBlock (total int, maxMalicious int, broadcastFunc func(msg ab.HoneyBadgerBFTMessage), acs *CommonSubset) (result *HoneyBadgerBlock) {
-func NewHoneyBadgerBlock(total int, maxMalicious int, acs *CommonSubset) (result *HoneyBadgerBlock) {
+func NewHoneyBadgerBlock(total int, maxMalicious int, acs *CommonSubset, logger *flogging.FabricLogger) (result *HoneyBadgerBlock) {
 
 	// bc := func(msg *ab.HoneyBadgerBFTMessageThresholdEncryption) {
 	// 	broadcastFunc(ab.HoneyBadgerBFTMessage{ThresholdEncryption: msg})
@@ -32,10 +33,10 @@ func NewHoneyBadgerBlock(total int, maxMalicious int, acs *CommonSubset) (result
 		total:        total,
 		maxMalicious: maxMalicious,
 		// broadcastFunc: bc,
-		acs: acs,
-
-		In:  make(chan []*cb.Envelope),
-		Out: make(chan []*cb.Envelope),
+		acs:    acs,
+		logger: logger,
+		In:     make(chan []*cb.Envelope),
+		Out:    make(chan []*cb.Envelope),
 	}
 	go result.honeyBadgerBlockService()
 	return result
@@ -44,18 +45,18 @@ func NewHoneyBadgerBlock(total int, maxMalicious int, acs *CommonSubset) (result
 func (block *HoneyBadgerBlock) honeyBadgerBlockService() {
 	// TODO: check that propose_in is the correct length, not too large
 	committingBatch := <-block.In
-	logger.Debugf("BLOCK input: []*cb.Envelop(len=%v)", len(committingBatch))
+	block.logger.Debugf("BLOCK input: []*cb.Envelop(len=%v)", len(committingBatch))
 
 	toACS, err := encodeTransactions(committingBatch)
 	if err != nil {
-		logger.Panic(err)
+		block.logger.Panic(err)
 	}
 
 	block.acs.In <- toACS
 
 	fromACS := <-block.acs.Out
 	if len(fromACS) != block.total {
-		logger.Panicf("Wrong number of acs output")
+		block.logger.Panicf("Wrong number of acs output")
 	}
 	count := 0
 	for _, v := range fromACS {
@@ -64,7 +65,7 @@ func (block *HoneyBadgerBlock) honeyBadgerBlockService() {
 		}
 	}
 	if count < block.total-block.maxMalicious {
-		logger.Panicf("Wrong number of acs valid output")
+		block.logger.Panicf("Wrong number of acs valid output")
 	}
 
 	var committedBatch []*cb.Envelope
@@ -74,14 +75,14 @@ func (block *HoneyBadgerBlock) honeyBadgerBlockService() {
 		}
 		transations, err := decodeTransactions(v)
 		if err != nil {
-			logger.Panic(err)
+			block.logger.Panic(err)
 		}
 		committedBatch = append(committedBatch, transations...)
 
 	}
 	// logger.Debugf("output::::::::::::::::::::::::::::::%v", committedBatch)
 
-	logger.Debugf("BLOCK output: []*cb.Envelop(len=%v)", len(committedBatch))
+	block.logger.Debugf("BLOCK output: []*cb.Envelop(len=%v)", len(committedBatch))
 	block.Out <- committedBatch
 }
 

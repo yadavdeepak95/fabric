@@ -1,6 +1,10 @@
 package honeybadgerbft
 
-import "sync"
+import (
+	"sync"
+
+	"github.com/hyperledger/fabric/common/flogging"
+)
 
 //CommonSubset structs
 type CommonSubset struct {
@@ -12,19 +16,20 @@ type CommonSubset struct {
 	lock         sync.Mutex
 	In           chan []byte
 	Out          chan [][]byte
+	logger       *flogging.FabricLogger
 }
 
 //NewCommonSubset return ACS
-func NewCommonSubset(ordererIndex int, total int, tolerance int, rbc []*ReliableBroadcast, aba []*BinaryAgreement) (result *CommonSubset) {
+func NewCommonSubset(ordererIndex int, total int, tolerance int, rbc []*ReliableBroadcast, aba []*BinaryAgreement, logger *flogging.FabricLogger) (result *CommonSubset) {
 	result = &CommonSubset{
 		ordererIndex: ordererIndex,
 		total:        total,
 		tolerance:    tolerance,
 		rbc:          rbc,
 		aba:          aba,
-
-		In:  make(chan []byte),
-		Out: make(chan [][]byte),
+		logger:       logger,
+		In:           make(chan []byte),
+		Out:          make(chan [][]byte),
 	}
 	go result.commonSubsetService()
 	return result
@@ -46,7 +51,7 @@ func (acs *CommonSubset) commonSubsetService() {
 	receiveRBC := func(instanceIndex int) {
 		select {
 		case <-killRBC[instanceIndex]:
-			logger.Debugf("killed RBC[%v]", instanceIndex)
+			acs.logger.Debugf("killed RBC[%v]", instanceIndex)
 			return
 		case data := <-acs.rbc[instanceIndex].Out:
 			acs.lock.Lock()
@@ -82,7 +87,7 @@ func (acs *CommonSubset) commonSubsetService() {
 			for index, aba := range acs.aba {
 				if !abaInputted[index] {
 					aba.In <- false
-					logger.Debugf("ACS putting false as no RBC")
+					acs.logger.Debugf("ACS putting false as no RBC")
 					abaInputted[index] = true
 				}
 			}
@@ -97,7 +102,7 @@ func (acs *CommonSubset) commonSubsetService() {
 		<-joinABA
 		// close(acsInstance.exitRecv)
 	}
-	logger.Debugf("EVERY BODY JOINED")
+	acs.logger.Debugf("EVERY BODY JOINED")
 
 	for index, abaOutput := range abaOutputs {
 		//
@@ -112,7 +117,7 @@ func (acs *CommonSubset) commonSubsetService() {
 
 			// <-joinRBC[index]
 			killRBC[index] <- nil
-			logger.Debugf("kill signal sent RBC[%v]", index)
+			acs.logger.Debugf("kill signal sent RBC[%v]", index)
 			rbcOutputs[index] = nil
 		}
 	}
@@ -120,11 +125,11 @@ func (acs *CommonSubset) commonSubsetService() {
 	for _, v := range rbcOutputs {
 		if v != nil {
 			avaliableCount++
-			logger.Debugf("OUT::  %v", v)
+			acs.logger.Debugf("OUT::  %v", v)
 		}
 
 	}
-	logger.Debugf("ACS output: [][]byte(len=%v,aval=%v)", len(rbcOutputs), avaliableCount)
+	acs.logger.Debugf("ACS output: [][]byte(len=%v,aval=%v)", len(rbcOutputs), avaliableCount)
 	acs.Out <- rbcOutputs
 
 }

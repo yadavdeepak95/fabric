@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"math"
 
+	"github.com/hyperledger/fabric/common/flogging"
 	ab "github.com/hyperledger/fabric/orderer/consensus/hbbft/honeybadgerbft/proto/orderer"
 	"github.com/klauspost/reedsolomon"
 )
@@ -22,10 +23,11 @@ type ReliableBroadcast struct {
 	In            chan []byte
 	Out           chan []byte
 	exitRecv      chan interface{}
+	logger        *flogging.FabricLogger
 }
 
 //NewReliableBroadcast new RBC
-func NewReliableBroadcast(instanceIndex int, total int, tolerance int, ordererIndex int, leaderIndex int, receiveMessageChannel chan *ab.HoneyBadgerBFTMessage, sendFunc func(index int, msg ab.HoneyBadgerBFTMessage), broadcastFunc func(msg ab.HoneyBadgerBFTMessage)) (result *ReliableBroadcast) {
+func NewReliableBroadcast(instanceIndex int, total int, tolerance int, ordererIndex int, leaderIndex int, receiveMessageChannel chan *ab.HoneyBadgerBFTMessage, sendFunc func(index int, msg ab.HoneyBadgerBFTMessage), broadcastFunc func(msg ab.HoneyBadgerBFTMessage), logger *flogging.FabricLogger) (result *ReliableBroadcast) {
 	// TODO: check param relations
 	s := func(index int, msg *ab.HoneyBadgerBFTMessageReliableBroadcast) {
 		sendFunc(index, ab.HoneyBadgerBFTMessage{ReliableBroadcast: msg})
@@ -51,9 +53,10 @@ func NewReliableBroadcast(instanceIndex int, total int, tolerance int, ordererIn
 		In:            make(chan []byte),
 		Out:           make(chan []byte),
 		exitRecv:      make(chan interface{}),
+		logger:        logger,
 	}
 	go result.reliableBroadcastService()
-	logger.Debugf("RBC orderer[%v] instactance[%v] Leader[%v]", ordererIndex, instanceIndex, leaderIndex)
+	result.logger.Debugf("RBC orderer[%v] instactance[%v] Leader[%v]", ordererIndex, instanceIndex, leaderIndex)
 	return result
 }
 
@@ -76,10 +79,10 @@ func (rbc *ReliableBroadcast) reliableBroadcastService() {
 
 	if rbc.leaderIndex == rbc.ordererIndex {
 		data := <-rbc.In
-		logger.Debugf("RBC[%v] input: []bytes(len=%v)", rbc.instanceIndex, len(data))
+		rbc.logger.Debugf("RBC[%v] input: []bytes(len=%v)", rbc.instanceIndex, len(data))
 		blocks, err := Encode(rbc.enc, data)
 		if err != nil {
-			logger.Panicf("Error occured when encoding data: %s", err)
+			rbc.logger.Panicf("Error occured when encoding data: %s", err)
 		}
 		tree := newMerkleTree(blocks) //TODO: check whether full binary tree
 		rootHash := tree[1]
@@ -106,14 +109,14 @@ func (rbc *ReliableBroadcast) reliableBroadcastService() {
 		err := rbc.enc.Reconstruct(blocks[string(rootHash)])
 
 		if err != nil {
-			logger.Panicf("Error occured when decoding data: , err")
+			rbc.logger.Panicf("Error occured when decoding data: , err")
 		}
 		var value []byte
 		for _, data := range (blocks[string(rootHash)])[:K] {
 			value = append(value, data...)
 		}
 
-		logger.Debugf("RBC[%v] output: []bytes(len=%v)", rbc.instanceIndex, len(value))
+		rbc.logger.Debugf("RBC[%v] output: []bytes(len=%v)", rbc.instanceIndex, len(value))
 		rbc.Out <- value[:padlen]
 	}
 	for {
@@ -139,12 +142,12 @@ func (rbc *ReliableBroadcast) reliableBroadcastService() {
 				}
 
 				if sender != rbc.leaderIndex {
-					logger.Panicf("VAL message from other than leader: %v", sender)
+					rbc.logger.Panicf("VAL message from other than leader: %v", sender)
 					continue
 				}
 
 				if !verifyMerkleTree(rootHash, branch, block, rbc.ordererIndex) {
-					logger.Panicf("Failed to validate VAL message")
+					rbc.logger.Panicf("Failed to validate VAL message")
 				}
 
 				rootHashFromLeader = rootHash
@@ -154,7 +157,7 @@ func (rbc *ReliableBroadcast) reliableBroadcastService() {
 				// case *ab.HoneyBadgerBFTMessageReliableBroadcast_Echo:
 				if _, exist := blocks[rootHashString]; exist {
 					if blocks[rootHashString][sender] != nil || echoSenders[sender] {
-						logger.Debugf("Redundant ECHO")
+						rbc.logger.Debugf("Redundant ECHO")
 						continue
 					}
 				} else {
@@ -162,7 +165,7 @@ func (rbc *ReliableBroadcast) reliableBroadcastService() {
 				}
 
 				if !verifyMerkleTree(rootHash, branch, block, sender) {
-					logger.Panicf("Failed to validate ECHO message")
+					rbc.logger.Panicf("Failed to validate ECHO message")
 				}
 
 				blocks[rootHashString][sender] = block
@@ -183,7 +186,7 @@ func (rbc *ReliableBroadcast) reliableBroadcastService() {
 				// case *ab.HoneyBadgerBFTMessageReliableBroadcast_Ready:
 				_, exist := ready[rootHashString]
 				if (exist && ready[rootHashString][sender]) || readySenders[sender] {
-					logger.Debugf("Redundant READY")
+					rbc.logger.Debugf("Redundant READY")
 					continue
 				}
 
@@ -219,10 +222,12 @@ func (rbc *ReliableBroadcast) reliableBroadcastService() {
 func Encode(enc reedsolomon.Encoder, data []byte) ([][]byte, error) {
 	shards, err := enc.Split(data)
 	if err != nil {
-		logger.Panic(err)
+		// logger.Panic(err)
+		return nil, err
 	}
 	if err := enc.Encode(shards); err != nil {
-		logger.Panic(err)
+		// logger.Panic(err)
+		return nil, err
 	}
 	return shards, nil
 }

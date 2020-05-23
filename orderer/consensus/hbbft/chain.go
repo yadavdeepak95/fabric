@@ -155,7 +155,7 @@ func NewChain(
 
 	//	c.ActiveNodes.Store([]uint64{})
 
-	c.Node = honeybadgerbft.NewWrapper(c.opts.BatchSize, int(c.nodeID), len(c.opts.Consenters))
+	c.Node = honeybadgerbft.NewWrapper(c.opts.BatchSize, int(c.nodeID), len(c.opts.Consenters), c.support.SharedConfig().BatchTimeout(), c.channelID, c.logger)
 
 	return c, nil
 }

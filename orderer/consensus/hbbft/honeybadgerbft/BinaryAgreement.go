@@ -3,6 +3,7 @@ package honeybadgerbft
 import (
 	"sync"
 
+	"github.com/hyperledger/fabric/common/flogging"
 	ab "github.com/hyperledger/fabric/orderer/consensus/hbbft/honeybadgerbft/proto/orderer"
 )
 
@@ -27,10 +28,11 @@ type BinaryAgreement struct {
 	exitRecv       chan interface{}
 	In             chan bool
 	Out            chan bool
+	logger         *flogging.FabricLogger
 }
 
 // NewBinaryAgreement return new BA
-func NewBinaryAgreement(instanceIndex int, total, tolerance int, inchannel chan *ab.HoneyBadgerBFTMessage, broadcastFunc func(msg ab.HoneyBadgerBFTMessage)) *BinaryAgreement {
+func NewBinaryAgreement(instanceIndex int, total, tolerance int, inchannel chan *ab.HoneyBadgerBFTMessage, broadcastFunc func(msg ab.HoneyBadgerBFTMessage), logger *flogging.FabricLogger) *BinaryAgreement {
 	bc := func(msg *ab.HoneyBadgerBFTMessageBinaryAgreement) {
 		broadcastFunc(ab.HoneyBadgerBFTMessage{Sender: uint64(instanceIndex), BinaryAgreement: msg})
 	}
@@ -45,6 +47,7 @@ func NewBinaryAgreement(instanceIndex int, total, tolerance int, inchannel chan 
 		In:            make(chan bool),
 		Out:           make(chan bool),
 		exitRecv:      make(chan interface{}),
+		logger:        logger,
 	}
 	go result.recvMsgs()
 	return result
@@ -54,7 +57,7 @@ func (aba *BinaryAgreement) recvMsgs() {
 	for {
 		select {
 		case <-aba.exitRecv:
-			logger.Debugf("ABA[%v] receive service exit", aba.instanceIndex)
+			aba.logger.Debugf("ABA[%v] receive service exit", aba.instanceIndex)
 			return
 		case msg := <-aba.In:
 			// logger.Debug("got msg")
@@ -79,7 +82,7 @@ func (aba *BinaryAgreement) handleIn(msg bool) {
 			Value: msg,
 			Est:   &ab.HoneyBadgerBFTMessageBinaryAgreementEST{},
 		})
-		logger.Debugf("ABA[%v] : R[%v] : V[%v]---BROADCASTED EST FROM IN", aba.instanceIndex, aba.epoch, msg)
+		aba.logger.Debugf("ABA[%v] : R[%v] : V[%v]---BROADCASTED EST FROM IN", aba.instanceIndex, aba.epoch, msg)
 
 		aba.putEstSentSet(aba.epoch, msg)
 	}
@@ -96,20 +99,20 @@ func (aba *BinaryAgreement) handleMsg(msg *ab.HoneyBadgerBFTMessage) {
 	}
 	// logger.Debugf("ABA[%v] : R[%v] : V[%v] : S[%v] : EST[%v] : AUX[%v] -- INPUT", aba.instanceIndex, round, value, sender, ba.GetEst() != nil, ba.GetAux() != nil)
 	if round < aba.epoch {
-		logger.Debugf("ABA[%v] : R[%v] : V[%v] : S[%v] : T[est] -- OLD DROPPING", aba.instanceIndex, round, value, sender)
+		aba.logger.Debugf("ABA[%v] : R[%v] : V[%v] : S[%v] : T[est] -- OLD DROPPING", aba.instanceIndex, round, value, sender)
 		return
 	} else if round > aba.epoch {
-		logger.Debugf("ABA[%v] : R[%v] : V[%v] : S[%v] : T[est] -- FUTURE ADDING TO QUEUE", aba.instanceIndex, round, value, sender)
+		aba.logger.Debugf("ABA[%v] : R[%v] : V[%v] : S[%v] : T[est] -- FUTURE ADDING TO QUEUE", aba.instanceIndex, round, value, sender)
 		aba.futureChan = append(aba.futureChan, msg)
 		return
 	} else if ba.GetEst() != nil {
 
 		//check for redundent messages
 		if aba.inEstRecv(round, value, sender) {
-			logger.Debugf("ABA[%v] : R[%v] : V[%v] : S[%v] : T[est] -- Redundent", aba.instanceIndex, round, value, sender)
+			aba.logger.Debugf("ABA[%v] : R[%v] : V[%v] : S[%v] : T[est] -- Redundent", aba.instanceIndex, round, value, sender)
 			return
 		}
-		logger.Debugf("ABA[%v] : R[%v] : V[%v] : S[%v] : T[est]", aba.instanceIndex, round, value, sender)
+		aba.logger.Debugf("ABA[%v] : R[%v] : V[%v] : S[%v] : T[est]", aba.instanceIndex, round, value, sender)
 
 		aba.putEstRecv(round, value, sender)
 		if aba.lenEstRecvSet(round, value) >= uint64(aba.tolerance+1) && !aba.inEstSentSet(round, value) {
@@ -119,13 +122,13 @@ func (aba *BinaryAgreement) handleMsg(msg *ab.HoneyBadgerBFTMessage) {
 				Value: value,
 				Est:   &ab.HoneyBadgerBFTMessageBinaryAgreementEST{},
 			})
-			logger.Debugf("ABA[%v] : R[%v] : V[%v]---BROADCASTED EST", aba.instanceIndex, round, value)
+			aba.logger.Debugf("ABA[%v] : R[%v] : V[%v]---BROADCASTED EST", aba.instanceIndex, round, value)
 
 			aba.putEstSentSet(round, value)
 
 		}
 		if aba.lenEstRecvSet(round, value) >= uint64(2*aba.tolerance+1) {
-			logger.Debugf("ABA[%v] : R[%v] : V[%v]---Putting Bin Value", aba.instanceIndex, round, value)
+			aba.logger.Debugf("ABA[%v] : R[%v] : V[%v]---Putting Bin Value", aba.instanceIndex, round, value)
 			if aba.lenBinValuesSet(round) == 0 {
 				aba.broadcastFunc(&ab.HoneyBadgerBFTMessageBinaryAgreement{
 					Round: round,
@@ -142,7 +145,7 @@ func (aba *BinaryAgreement) handleMsg(msg *ab.HoneyBadgerBFTMessage) {
 	} else if ba.GetAux() != nil {
 
 		if aba.inAuxValuesSet(round, value, sender) {
-			logger.Debugf("ABA[%v] : R[%v] : V[%v] : S[%v] : T[Aux] -- Redundent", aba.instanceIndex, round, value, sender)
+			aba.logger.Debugf("ABA[%v] : R[%v] : V[%v] : S[%v] : T[Aux] -- Redundent", aba.instanceIndex, round, value, sender)
 
 			return
 		}
@@ -150,7 +153,7 @@ func (aba *BinaryAgreement) handleMsg(msg *ab.HoneyBadgerBFTMessage) {
 		aba.tryOutput()
 	} else {
 		// aba.Lock.Lock()
-		logger.Debugf("%+v", aba.estRecv)
+		aba.logger.Debugf("%+v", aba.estRecv)
 		// aba.Lock.Unlock()
 	}
 }
@@ -174,11 +177,11 @@ func (aba *BinaryAgreement) tryOutput() {
 	if len(values) == 1 {
 
 		v := values[0]
-		logger.Debugf("ABA[%v] Round[%v] est[%v] Coin[%v]", aba.instanceIndex, aba.epoch, v, s)
+		aba.logger.Debugf("ABA[%v] Round[%v] est[%v] Coin[%v]", aba.instanceIndex, aba.epoch, v, s)
 		if v == s {
 			if aba.alreadyDecided == nil {
 				aba.alreadyDecided = &v
-				logger.Debugf("ABA[%v] <- Out", aba.instanceIndex)
+				aba.logger.Debugf("ABA[%v] <- Out", aba.instanceIndex)
 				//TODO : Add function if found appropriate
 				aba.Out <- v
 				// close(aba.exitRecv)
@@ -188,12 +191,12 @@ func (aba *BinaryAgreement) tryOutput() {
 			est = v
 		}
 	} else {
-		logger.Debugf("ABA[%v], Est[%v] ROUND[%v]", aba.instanceIndex, s, aba.epoch)
+		aba.logger.Debugf("ABA[%v], Est[%v] ROUND[%v]", aba.instanceIndex, s, aba.epoch)
 		est = s
 	}
 	aba.epoch++
 	if !aba.inEstSentSet(aba.epoch, est) {
-		logger.Debugf("ABA[%v] [%v][%v]---BROADCASTED EST", aba.instanceIndex, aba.epoch, est)
+		aba.logger.Debugf("ABA[%v] [%v][%v]---BROADCASTED EST", aba.instanceIndex, aba.epoch, est)
 		aba.broadcastFunc(&ab.HoneyBadgerBFTMessageBinaryAgreement{
 			Round: aba.epoch,
 			Value: est,
