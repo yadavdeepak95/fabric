@@ -1,0 +1,189 @@
+Running Suite: Hbbft Suite
+==========================
+Random Seed: [1m1590489289[0m
+Will run [1m10[0m of [1m10[0m specs
+
+[0mConsenter[0m [90mwhen the consenter is extracting the channel[0m 
+  [1mextracts successfully from step requests[0m
+  [37m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/consenter_test.go:84[0m
+[32m•[0m
+[90m------------------------------[0m
+[0mConsenter[0m [90mwhen the consenter is extracting the channel[0m 
+  [1mextracts successfully from submit requests[0m
+  [37m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/consenter_test.go:89[0m
+[32m•[0m
+[90m------------------------------[0m
+[0mConsenter[0m [90mwhen the consenter is extracting the channel[0m 
+  [1mreturns an empty string for the rest of the messages[0m
+  [37m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/consenter_test.go:94[0m
+[32m•[0m
+[90m------------------------------[0m
+[0mConsenter[0m [90mwhen the consenter is asked for a chain[0m 
+  [1mcalls the chain getter and returns the reference when it is found[0m
+  [37m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/consenter_test.go:114[0m
+[32m•[0m
+[90m------------------------------[0m
+[0mConsenter[0m [90mwhen the consenter is asked for a chain[0m 
+  [1mcalls the chain getter and returns nil when it's not found[0m
+  [37m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/consenter_test.go:122[0m
+[32m•[0m
+[90m------------------------------[0m
+[0mConsenter[0m [90mwhen the consenter is asked for a chain[0m 
+  [1mcalls the chain getter and returns nil when it's not a raft chain[0m
+  [37m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/consenter_test.go:129[0m
+[32m•[0m
+[90m------------------------------[0m
+[0mConsenter[0m [90mwhen the consenter is asked for a chain[0m [33m2020-05-26 16:04:56.697 IST [test] ReceiverByChain -> WARN 001[0m Chain notraftchain is of type *multichannel.ChainSupport and not hbbft.Chain
+
+  [1mcalls the chain getter and panics when the chain has a bad internal state[0m
+  [37m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/consenter_test.go:136[0m
+[32m•[0m[35m2020-05-26 16:04:56.698 IST [test] ReceiverByChain -> PANI 002[0m Programming error - Chain badChainObject is nil although it exists in the mapping
+
+[90m------------------------------[0m
+[0mConsenter[0m 
+  [1msuccessfully constructs a Chain[0m
+  [37m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/consenter_test.go:146[0m
+WRAPPER FIRED UP***********************8[34m2020-05-26 16:04:56.720 IST [test] Start -> INFO 003[0m Starting Hbbft node channel= node=0
+2020-05-26 16:04:56.721 IST [orderer/HoneybadgerBFT] Consensus -> INFO 002[0m CON CALLED
+loop running2020-05-26 16:04:56.721 IST [orderer/HoneybadgerBFT] Start -> INFO 001[0m HONEY BADGER STARTED
+[32m•[0m
+[90m------------------------------[0m
+[0mConsenter[0m 
+  [1mfails to handle chain if no matching cert found[0m
+  [37m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/consenter_test.go:188[0m
+[33m2020-05-26 16:04:56.723 IST [test] detectSelfID -> WARN 004[0m Could not find -----BEGIN CERTIFICATE-----
+Y2VydCBieXRlcw==
+-----END CERTIFICATE-----
+ among [-----BEGIN CERTIFICATE-----
+Zm9v
+-----END CERTIFICATE-----
+]
+[32m•[0m
+[90m------------------------------[0m
+[0mChain[0m [90m3-node Raft cluster[0m [0mwhen 3/3 nodes are running[0m 
+  [1morders envelope on leader[0m
+  [37m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/chain_test.go:221[0m
+WRAPPER FIRED UP***********************8WRAPPER FIRED UP***********************8WRAPPER FIRED UP***********************8WRAPPER FIRED UP***********************8{"level":"info","msg":"Starting Hbbft node","channel":"multi-node-channel","node":0}
+{"level":"info","msg":"Starting Hbbft node","channel":"multi-node-channel","node":1}
+2020-05-26 16:04:56.865 IST [orderer/HoneybadgerBFT] Start -> INFO 003[0m HONEY BADGER STARTED
+2020-05-26 16:04:56.867 IST [orderer/HoneybadgerBFT] Start -> INFO 004[0m HONEY BADGER STARTED
+{"level":"info","msg":"Starting Hbbft node","channel":"multi-node-channel","node":2}
+2020-05-26 16:04:56.867 IST [orderer/HoneybadgerBFT] Start -> INFO 005[0m HONEY BADGER STARTED
+{"level":"info","msg":"Starting Hbbft node","channel":"multi-node-channel","node":3}
+2020-05-26 16:04:56.869 IST [orderer/HoneybadgerBFT] Start -> INFO 006[0m HONEY BADGER STARTED
+[1mSTEP[0m: instructed to cut next block
+loop running2020-05-26 16:04:56.869 IST [orderer/HoneybadgerBFT] Consensus -> INFO 007[0m CON CALLED
+loop running2020-05-26 16:04:56.869 IST [orderer/HoneybadgerBFT] Consensus -> INFO 008[0m CON CALLED
+loop running2020-05-26 16:04:56.870 IST [orderer/HoneybadgerBFT] Consensus -> INFO 009[0m CON CALLED
+
+GOT txn[0]batchsize[1] tempcount[1]
+
+
+ Triggering BLOCK CHAIN [0] cout[1] config[false]loop running2020-05-26 16:04:56.870 IST [orderer/HoneybadgerBFT] Consensus -> INFO 00a[0m 
+
+***************0[0]*****************
+
+2020-05-26 16:04:56.870 IST [orderer/HoneybadgerBFT] Consensus -> INFO 00b[0m CON CALLED
+
+GOT txn[3]batchsize[1] tempcount[1]
+
+
+ Triggering BLOCK CHAIN [3] cout[1] config[false]2020-05-26 16:04:56.870 IST [orderer/HoneybadgerBFT] Consensus -> INFO 00c[0m 
+
+***************0[3]*****************
+
+
+GOT txn[2]batchsize[1] tempcount[1]
+
+
+ Triggering BLOCK CHAIN [2] cout[1] config[false]2020-05-26 16:04:56.881 IST [orderer/HoneybadgerBFT] Consensus -> INFO 00d[0m 
+
+***************0[2]*****************
+
+
+GOT txn[1]batchsize[1] tempcount[1]
+
+
+ Triggering BLOCK CHAIN [1] cout[1] config[false]2020-05-26 16:04:56.892 IST [orderer/HoneybadgerBFT] Consensus -> INFO 00e[0m 
+
+***************0[1]*****************
+
+
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+2020-05-26 16:04:56.985 IST [orderer/HoneybadgerBFT] Consensus -> INFO 00f[0m 0, 1, 114.495479ms
+2020-05-26 16:04:56.985 IST [orderer/HoneybadgerBFT] Consensus -> INFO 010[0m 
+
+********************Bufferlen == 0**************
+
+loop running2020-05-26 16:04:56.988 IST [orderer/HoneybadgerBFT] Consensus -> INFO 011[0m ch.blockout[3]
+
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+2020-05-26 16:04:56.991 IST [orderer/HoneybadgerBFT] Consensus -> INFO 012[0m 0, 1, 120.998686ms
+2020-05-26 16:04:56.991 IST [orderer/HoneybadgerBFT] Consensus -> INFO 013[0m 
+
+********************Bufferlen == 0**************
+
+loop running2020-05-26 16:04:56.991 IST [orderer/HoneybadgerBFT] Consensus -> INFO 014[0m ch.blockout[0]
+
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+2020-05-26 16:04:56.991 IST [orderer/HoneybadgerBFT] Consensus -> INFO 015[0m 0, 1, 99.081085ms
+2020-05-26 16:04:56.991 IST [orderer/HoneybadgerBFT] Consensus -> INFO 016[0m 
+
+********************Bufferlen == 0**************
+
+loop running
+
+AFTER DELETING DUPLICATE***
+B=3 A=1
+
+{"level":"info","msg":"Created block [1]","channel":"multi-node-channel","node":3}
+2020-05-26 16:04:56.994 IST [orderer/HoneybadgerBFT] Consensus -> INFO 017[0m ch.blockout[1]
+{"level":"debug","msg":"**********writting BLock***************","channel":"multi-node-channel","node":3}
+{"level":"info","msg":"Writing block [1] (Raft index: 3) to ledger","channel":"multi-node-channel","node":3}
+2020-05-26 16:04:56.994 IST [orderer/HoneybadgerBFT] Consensus -> INFO 018[0m 0, 1, 112.671518ms
+loop running2020-05-26 16:04:56.994 IST [orderer/HoneybadgerBFT] Consensus -> INFO 019[0m 
+
+********************Bufferlen == 0**************
+
+2020-05-26 16:04:56.994 IST [orderer/HoneybadgerBFT] Consensus -> INFO 01a[0m ch.blockout[2]
+{"level":"info","msg":"Created block [1]","channel":"multi-node-channel","node":0}
+{"level":"debug","msg":"**********writting BLock***************","channel":"multi-node-channel","node":0}
+{"level":"info","msg":"Writing block [1] (Raft index: 0) to ledger","channel":"multi-node-channel","node":0}
+{"level":"info","msg":"Created block [1]","channel":"multi-node-channel","node":1}
+{"level":"debug","msg":"**********writting BLock***************","channel":"multi-node-channel","node":1}
+{"level":"info","msg":"Writing block [1] (Raft index: 1) to ledger","channel":"multi-node-channel","node":1}
+{"level":"info","msg":"Created block [1]","channel":"multi-node-channel","node":2}
+{"level":"debug","msg":"**********writting BLock***************","channel":"multi-node-channel","node":2}
+{"level":"info","msg":"Writing block [1] (Raft index: 2) to ledger","channel":"multi-node-channel","node":2}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":0}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":1}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":2}
+{"level":"info","msg":"Stop serving requests","channel":"multi-node-channel","node":3}
+
+[32m• [SLOW TEST:10.199 seconds][0m
+Chain
+[90m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/chain_test.go:64[0m
+  3-node Raft cluster
+  [90m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/chain_test.go:84[0m
+    when 3/3 nodes are running
+    [90m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/chain_test.go:211[0m
+      orders envelope on leader
+      [90m/home/deepak/go/src/github.com/hyperledger/fabric/orderer/consensus/hbbft/chain_test.go:221[0m
+[90m------------------------------[0m
+
+[1m[32mRan 10 of 10 Specs in 10.255 seconds[0m
+[1m[32mSUCCESS![0m -- [32m[1m10 Passed[0m | [91m[1m0 Failed[0m | [33m[1m0 Pending[0m | [36m[1m0 Skipped[0m
+PASS
+coverage: 30.4% of statements
+
+Ginkgo ran 1 suite in 17.456909223s
+Test Suite Passed

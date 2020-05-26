@@ -41,6 +41,7 @@ type ChainImpl struct {
 	// blockOut      chan interface{}
 	MsgChan   *MessageChannels
 	tempCount uint64
+	timer     <-chan time.Time
 }
 
 //used to maintain to call for next proposal
@@ -57,9 +58,17 @@ func (ch *ChainImpl) Enqueue(env *cb.Envelope, isConfig bool) {
 		fmt.Printf("\n Triggering BLOCK CHAIN [%v] cout[%v] config[%v]", ch.Index, ch.tempCount, isConfig)
 		ch.tempCount = 0
 		ch.newBlockChan <- nil
+	} else {
+		if ch.timer == nil {
+			logger.Info("starting timer")
+			ch.timer = time.After(time.Second)
+		}
 	}
 
 	ch.bufferLock.Unlock()
+	// fmt.Print("Waiting on timer")
+	// <-ch.timer
+	// fmt.Print("Wait complete")
 }
 
 //NewWrapper create new insatance of chain
@@ -78,7 +87,7 @@ func NewWrapper(batchSize int, Index int, total int) *ChainImpl {
 	}
 
 	ch := &ChainImpl{
-		batchSize:    uint64(1), //,uint64(batchSize),
+		batchSize:    uint64(1),
 		Total:        total,
 		Tolerance:    ((total - 1) / 3),
 		Index:        Index,
@@ -102,6 +111,7 @@ func (ch *ChainImpl) Start() {
 	// go ch.run()
 	//main function does all main stuff propose/consensus and all
 	go ch.Consensus()
+	go ch.timerFunc()
 	// mapping message to proper channel
 	dispatchMessageByHeightService := func() {
 		for {
@@ -114,6 +124,7 @@ func (ch *ChainImpl) Start() {
 			ch.heightLock.Unlock()
 		}
 	}
+	logger.Info("HONEY BADGER STARTED")
 	go dispatchMessageByHeightService()
 }
 
@@ -153,28 +164,51 @@ func unique(intSlice []*cb.Envelope) []*cb.Envelope {
 	}
 	return list
 }
+func (ch *ChainImpl) timerFunc() {
+	for {
+		select {
+		case <-ch.timer:
+			logger.Info("Time triggered")
+
+			if len(ch.newBlockChan) == 0 {
+				ch.newBlockChan <- nil
+			}
+			ch.timer = nil
+		}
+	}
+}
 
 //Consensus main
 func (ch *ChainImpl) Consensus() {
+	logger.Info("CON CALLED")
 	for {
-
-		sendFunc := func(index int, msg ab.HoneyBadgerBFTMessage) {
-			msg.Height = ch.height
-			msg.Receiver = uint64(index)
-			msg.Sender = uint64(ch.Index)
-			// fmt.Printf("SENDING MSGS**********************\n\n%+v\n\n", msg)
-			ch.MsgChan.Send <- msg
-		}
-		broadcastFunc := func(msg ab.HoneyBadgerBFTMessage) {
-			for i := 0; i < ch.Total; i++ {
-				sendFunc(i, msg)
-			}
-		}
+		fmt.Print("loop running")
 		select {
 		// case <-ch.exitChan:
 		// 	logger.Debug("Exiting")
 		// 	return
 		case <-ch.newBlockChan:
+
+			sendFunc := func(index int, msg ab.HoneyBadgerBFTMessage) {
+				msg.Height = ch.height
+				msg.Receiver = uint64(index)
+				msg.Sender = uint64(ch.Index)
+				// fmt.Printf("SENDING MSGS**********************\n\n%+v\n\n", msg)
+				ch.MsgChan.Send <- msg
+			}
+			broadcastFunc := func(msg ab.HoneyBadgerBFTMessage) {
+				for i := 0; i < ch.Total; i++ {
+					sendFunc(i, msg)
+				}
+			}
+			ch.bufferLock.Lock()
+			if len(ch.txbuffer) == 0 {
+				logger.Warningf("Wrong timer trigger")
+				ch.timer = nil
+				ch.bufferLock.Unlock()
+				continue
+			}
+			ch.bufferLock.Unlock()
 			var exitHeight = make(chan interface{})
 			ch.heightLock.Lock()
 			logger.Infof("\n\n***************%v[%v]*****************\n\n", ch.height, ch.Index)
@@ -350,6 +384,7 @@ func (ch *ChainImpl) Consensus() {
 				}
 				ch.bufferLock.Unlock()
 			}
+
 		}
 
 	}

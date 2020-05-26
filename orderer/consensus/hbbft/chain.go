@@ -10,6 +10,7 @@ import (
 	"encoding/pem"
 	"fmt"
 	"sync"
+	"time"
 
 	"github.com/golang/protobuf/proto"
 	"github.com/hyperledger/fabric/common/configtx"
@@ -194,7 +195,7 @@ func (c *Chain) Start() {
 // Order submits normal type transactions for ordering.
 func (c *Chain) Order(env *common.Envelope, configSeq uint64) error {
 	// c.Metrics.NormalProposalsReceived.Add(1)
-	return c.Submit(&orderer.SubmitRequest{LastValidationSeq: configSeq, Payload: env, Channel: c.channelID}, 0)
+	return c.Submit(&orderer.SubmitRequest{LastValidationSeq: configSeq, Payload: env, Channel: c.channelID}, c.nodeID)
 }
 
 // Configure submits config type transactions for ordering.
@@ -206,7 +207,7 @@ func (c *Chain) Configure(env *common.Envelope, configSeq uint64) error {
 		//c.Metrics.ProposalFailures.Add(1)
 		return err
 	}
-	return c.Submit(&orderer.SubmitRequest{LastValidationSeq: configSeq, Payload: env, Channel: c.channelID}, 0)
+	return c.Submit(&orderer.SubmitRequest{LastValidationSeq: configSeq, Payload: env, Channel: c.channelID}, c.nodeID)
 }
 
 //TODO
@@ -417,13 +418,43 @@ func (c *Chain) send() {
 
 //TODO add timer here
 func (c *Chain) outputtxns() {
+	var timer <-chan time.Time
 	for {
 		select {
 		case txn := <-c.Node.MsgChan.Outtxn:
-			batches, _, err := c.ordered(&orderer.SubmitRequest{Payload: txn})
+
+			batches, pending, err := c.ordered(&orderer.SubmitRequest{Payload: txn})
 			if err != nil {
 				c.logger.Errorf("Failed to order message: %s", err)
 				continue
+			}
+
+			c.propose(c.bc, batches...)
+			switch {
+			case timer != nil && !pending:
+				// Timer is already running but there are no messages pending, stop the timer
+				timer = nil
+			case timer == nil && pending:
+				// Timer is not already running and there are messages pending, so start it
+				timer = time.After(c.support.SharedConfig().BatchTimeout())
+				c.logger.Debugf("Just began %s batch timer", c.support.SharedConfig().BatchTimeout().String())
+			default:
+				// Do nothing when:
+				// 1. Timer is already running and there are messages pending
+				// 2. Timer is not set and there are no messages pending
+			}
+		case <-timer:
+			//clear the timer
+			timer = nil
+
+			batch := c.support.BlockCutter().Cut()
+			if len(batch) == 0 {
+				c.logger.Warningf("Batch timer expired with no pending requests, this might indicate a bug")
+				continue
+			}
+			batches := [][]*common.Envelope{}
+			if len(batch) != 0 {
+				batches = append(batches, batch)
 			}
 			c.propose(c.bc, batches...)
 
@@ -488,7 +519,7 @@ func (c *Chain) run() {
 }
 
 func (c *Chain) writeBlock(block *common.Block, index uint64) {
-	c.logger.Debugf("\n\n\n\n\n**********writting BLock***************\n\n\n\n")
+	c.logger.Debugf("**********writting BLock***************")
 	if block.Header.Number > c.lastBlock.Header.Number+1 {
 		c.logger.Panicf("Got block [%d], expect block [%d]", block.Header.Number, c.lastBlock.Header.Number+1)
 	} else if block.Header.Number < c.lastBlock.Header.Number+1 {
@@ -551,13 +582,16 @@ func (c *Chain) ordered(msg *orderer.SubmitRequest) (batches [][]*common.Envelop
 			return nil, true, errors.Errorf("bad normal message: %s", err)
 		}
 	}
-	batch := c.support.BlockCutter().Cut()
-	batches = [][]*common.Envelope{}
-	if len(batch) != 0 {
-		batches = append(batches, batch)
-	}
-	batches = append(batches, []*common.Envelope{msg.Payload})
-	return batches, false, nil
+
+	//TODO add support ordered call here
+	// batch := c.support.BlockCutter().Cut()
+	// batches = [][]*common.Envelope{}
+	// if len(batch) != 0 {
+	// 	batches = append(batches, batch)
+	// }
+	// batches = append(batches, []*common.Envelope{msg.Payload})
+	batches, pending = c.support.BlockCutter().Ordered(msg.Payload)
+	return batches, pending, nil
 
 }
 
