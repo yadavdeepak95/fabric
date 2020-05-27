@@ -232,24 +232,35 @@ var _ = Describe("Chain", func() {
 				c3.cutter.CutNext = true
 				// err = c3.Order(env, 0)
 				// Expect(err).ToNot(HaveOccurred())
-				time.Sleep(10 * time.Second)
+				// time.Sleep(10 * time.Second)
 				network.exec(
 					func(c *chain) {
 						Eventually(c.support.WriteBlockCallCount, LongEventualTimeout).Should(Equal(1))
 					})
 
-				// By("respect batch timeout")
-				// c0.cutter.CutNext = false
-				// c1.cutter.CutNext = false
-				// c2.cutter.CutNext = false
-				// c3.cutter.CutNext = false
+				By("respect batch timeout")
+				c0.cutter.CutNext = false
+				c1.cutter.CutNext = false
+				c2.cutter.CutNext = false
+				c3.cutter.CutNext = false
+				err = c0.Order(env, 0)
+				err = c0.Order(env, 0)
+				err = c0.Order(env, 0)
+				err = c0.Order(env, 0)
+				err = c0.Order(env, 0)
+				err = c0.Order(env, 0)
+				err = c0.Order(env, 0)
+				err = c0.Order(env, 0)
+				err = c0.Order(env, 0)
+				err = c0.Order(env, 0)
+				err = c0.Order(env, 0)
+				err = c0.Order(env, 0)
 
-				// err = c1.Order(env, 0)
 				// Expect(err).ToNot(HaveOccurred())
 				// Eventually(c1.cutter.CurBatch, LongEventualTimeout).Should(HaveLen(1))
 
-				// // // c1.clock.WaitForNWatchersAndIncrement(timeout, 2)
-				// time.Sleep(10 * time.Second)
+				// // c1.clock.WaitForNWatchersAndIncrement(timeout, 2)
+				time.Sleep(3 * time.Second)
 				// network.exec(
 				// 	func(c *chain) {
 				// 		Eventually(c.support.WriteBlockCallCount, LongEventualTimeout).Should(Equal(2))

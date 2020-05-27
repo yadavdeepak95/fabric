@@ -155,8 +155,12 @@ func NewChain(
 	}
 
 	//	c.ActiveNodes.Store([]uint64{})
-
-	c.Node = honeybadgerbft.NewWrapper(c.opts.BatchSize, int(c.nodeID), len(c.opts.Consenters))
+	if c.opts.BatchSize == 0 {
+		c.opts.BatchSize = ((len(c.opts.Consenters) / 2) * 10)
+	} else {
+		c.opts.BatchSize = c.opts.BatchSize * (len(c.opts.Consenters) / 2)
+	}
+	c.Node = honeybadgerbft.NewWrapper(c.opts.BatchSize, int(c.nodeID), len(c.opts.Consenters), c.support.SharedConfig().BatchTimeout())
 
 	return c, nil
 }
@@ -195,6 +199,7 @@ func (c *Chain) Start() {
 // Order submits normal type transactions for ordering.
 func (c *Chain) Order(env *common.Envelope, configSeq uint64) error {
 	// c.Metrics.NormalProposalsReceived.Add(1)
+	c.logger.Info("*****************GOT NORMAL TXNS*******")
 	return c.Submit(&orderer.SubmitRequest{LastValidationSeq: configSeq, Payload: env, Channel: c.channelID}, c.nodeID)
 }
 
@@ -202,6 +207,8 @@ func (c *Chain) Order(env *common.Envelope, configSeq uint64) error {
 func (c *Chain) Configure(env *common.Envelope, configSeq uint64) error {
 	//c.Metrics.ConfigProposalsReceived.Add(1)
 	//TODO
+	c.logger.Info("*****************GOT CONFIG TXNS*******")
+
 	if err := c.checkConfigUpdateValidity(env); err != nil {
 		c.logger.Warnf("Rejected config: %s", err)
 		//c.Metrics.ProposalFailures.Add(1)
@@ -436,7 +443,7 @@ func (c *Chain) outputtxns() {
 				timer = nil
 			case timer == nil && pending:
 				// Timer is not already running and there are messages pending, so start it
-				timer = time.After(c.support.SharedConfig().BatchTimeout())
+				timer = time.After(c.support.SharedConfig().BatchTimeout() / 2)
 				c.logger.Debugf("Just began %s batch timer", c.support.SharedConfig().BatchTimeout().String())
 			default:
 				// Do nothing when:
